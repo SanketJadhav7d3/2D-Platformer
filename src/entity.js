@@ -17,7 +17,7 @@
 //   }
 // }
 
-const gravity = 0.5;
+const gravity = 1;
 
 class Entity {
   constructor(position, dimension, context) {
@@ -68,7 +68,9 @@ class PlayerEntity extends Entity {
           this.keys.d.pressed = true;
           break;
         case 'w':
-          this.velocity.y -= 15;
+          // check if player on ground
+          if (this.velocity.y == 0)
+            this.velocity.y -= 25;
           break;
       }
     });
@@ -89,11 +91,12 @@ class PlayerEntity extends Entity {
     super.update();
     this.velocity.x = 0;
     if (this.keys.d.pressed)
-      this.velocity.x = 5;
+      this.velocity.x = 10;
     if (this.keys.a.pressed)
-      this.velocity.x = -5;
+      this.velocity.x = -10;
   }
 } 
 
 class AIEntity {
+
 }
