@@ -1,7 +1,8 @@
 
 class Sprite {
-  constructor (position, img_path, context) {
+  constructor ({position,  img_path, context, dimension}) {
     this.position = position;
+    this.dimension = dimension;
     this.image = new Image();
     this.loaded = false;
     this.image.onload = () => {
@@ -14,15 +15,9 @@ class Sprite {
 
   draw() {
     if (!this.loaded) return;
-    this.context.drawImage(this.image, this.position.x, this.position.y, window.innerWidth, window.innerHeight);
-  }
-}
-
-class Tile extends Sprite {
-  collision() {
-
-  }
-  draw() {
-
+    if (this.dimension)
+      this.context.drawImage(this.image, this.position.x, this.position.y, this.dimension.width, this.dimension.height);
+    else
+      this.context.drawImage(this.image, this.position.x, this.position.y);
   }
 }

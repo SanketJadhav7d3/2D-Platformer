@@ -35,20 +35,32 @@ class Entity {
     this.context.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
   }
 
+  //  collisionDetection(object) {
+  //    // vertical collision
+  //    return (this.position.y + this.dimension.height >= object.position.y &&
+  //            this.position.y <= object.position.y + object.dimension.height &&
+  //            this.position.x <= object.position.x + object.dimension.width &&
+  //            this.position.x + this.dimension.width >= object.position.x
+  //    );
+  // }
+  collisionDetected() {
+    this.velocity.y = 0;
+  }
+
   update() {
     this.draw();
-    this.position.y += this.velocity.y;
     this.position.x += this.velocity.x;
+    this.applyGravity();
+  }
 
-    if (this.position.y + this.dimension.height + this.velocity.y < canvas.height)
-      this.velocity.y += gravity;
-    else
-      this.velocity.y = 0;
+  applyGravity() {
+    this.position.y += this.velocity.y;
+    this.velocity.y += gravity;
   }
 }
 
 class PlayerEntity extends Entity {
-  constructor(position, dimension, context) {
+  constructor({position, dimension, context}) {
     super(position, dimension, context);
     this.keys = {
       d : {
@@ -58,6 +70,9 @@ class PlayerEntity extends Entity {
         pressed : false,
       },
     }  
+
+    this.dimension.height /= 3.47;
+    this.dimension.width /= 3;
 
     window.addEventListener("keydown", (event) => {
       switch (event.key) {
@@ -89,6 +104,15 @@ class PlayerEntity extends Entity {
 
   update() {
     super.update();
+    
+//
+//    this.collisionTiles.forEach(tile => {
+//      if (this.collisionDetection(tile)) {
+//        if (this.velocity.y > 0)
+//          this.velocity.y = 0
+//      }
+//    })
+//
     this.velocity.x = 0;
     if (this.keys.d.pressed)
       this.velocity.x = 10;
@@ -97,6 +121,5 @@ class PlayerEntity extends Entity {
   }
 } 
 
-class AIEntity {
-
+class AIEntity extends Entity {
 }

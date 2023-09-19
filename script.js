@@ -7,23 +7,40 @@ canvas.height = window.innerHeight;
 
 canvas.style = "position:absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);";
 
-const player = new PlayerEntity({x : 100, y : 100}, {width: 100, height: 100}, ctx);
+const background = new Sprite({
+  position: {
+    x : 0,
+    y: 0
+  },
+  img_path: "./assets/environment/background.png",
+  context: ctx
+});
 
-var entites = [player]
+const player = new PlayerEntity({
+  position: {x : 100, y : 100}, 
+  dimension: {width: 100, height: 100}, 
+  context: ctx
+});
 
-
-const background = new Sprite({ x : 0, y: 0}, "./assets/Background/background.png", ctx);
-const middleground = new Sprite({ x : 0, y: 0}, "./assets/Background/middleground.png", ctx);
+const level = new Level({
+  context: ctx,
+  bg_img_path: "./assets/environment/background.png",
+  floorCollisionData: floorCollision,
+  platformCollisionData: platformCollision,
+  entites: [player]
+});
 
 function run() {
-  window.requ(run);
+  window.requestAnimationFrame(run);
 
-  background.draw();
-  middleground.draw();
+  // scaling and restoring 
+  // ctx.save()
+  // floor collision and tile collision goes inside
+  // ctx.scale(3, 3.47);
+  // background.draw();
+  // ctx.restore();
 
-  entites.forEach(entity => {
-    entity.update();
-  })
+  level.drawBackground();
 }
 
 run();
