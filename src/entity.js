@@ -1,18 +1,21 @@
 
-const gravity = 1;
+const gravity = 0.5;
 
 class Entity extends Sprite {
     constructor({
         position,
         imageSrc,
         frameRate,
-        scale
+        scale, 
+        collisionBlocks,
+        frameBuffer
     }) {
         super({
             position,
             imageSrc,
             frameRate,
-            scale
+            scale,
+            frameBuffer
         });
         this.velocity = {
             x : 0, 
@@ -23,40 +26,75 @@ class Entity extends Sprite {
                 x: this.position.x,
                 y: this.position.y
             }, 
-            height: 10, 
+            height: 11, 
             width: 10
         };
+        this.collisionBlocks = collisionBlocks;
+        this.jump = false;
+        this.last_direction = "right";
     }
 
     updateHitBox() {
-        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-        ctx.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+        // ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        // ctx.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
 
         this.hitbox = {
             position:  {
-                x: this.position.x + 20,
-                y: this.position.y + 28
+                x: this.position.x + 110,
+                y: this.position.y + (250 / 2) - 7
             }, 
-            height: 32, 
-            width: 19
+            height: 48, 
+            width: 40
         };
     }
 
+    verticalCollision() {
+        for (let i = 0; i < this.collisionBlocks.length; i++) {
+            const collisionBlock = this.collisionBlocks[i]
+            if (
+                collision({
+                    object1: this.hitbox,
+                    object2: collisionBlock,
+                })
+            ) {
+                if (this.velocity.y > 0) {
+                    this.velocity.y = 0
+
+                    const offset = this.hitbox.position.y - this.position.y + this.hitbox.height
+
+                    this.position.y = collisionBlock.position.y - offset - 0.01
+                    this.jump = false;
+                    break;
+                }
+                //if (this.velocity.y < 0) {
+                //    this.velocity.y = 0
+                //    const offset = this.hitbox.position.y - this.position.y
+                //    this.position.y =
+                //        collisionBlock.position.y + collisionBlock.height - offset + 0.01
+                //    this.onground = true;
+                //    break;
+                //}
+            }
+        }
+    }
+
     collisionDetected() {
-        this.velocity.y = 0;
+        if (this.velocity.y > 0)
+            this.velocity.y = 0;
     }
 
     update() {
         this.draw();
-        this.updateFrames();
         this.updateHitBox();
+        this.updateFrames();
+        this.verticalCollision();
         this.position.x += this.velocity.x;
         this.applyGravity();
     }
 
     applyGravity() {
-        this.position.y += this.velocity.y;
         this.velocity.y += gravity;
+        this.position.y += this.velocity.y;
     }
 }
 
@@ -66,12 +104,16 @@ class PlayerEntity extends Entity {
         position,
         imageSrc,
         frameRate,
-        scale
+        scale,
+        collisionBlocks,
+        frameBuffer
     }) {
         super({
             position,
             imageSrc,
             frameRate,
+            collisionBlocks,
+            frameBuffer
         });
         this.keys = {
             d : {
@@ -80,7 +122,14 @@ class PlayerEntity extends Entity {
             a : {
                 pressed : false,
             },
-        }  
+        };
+
+        // animations
+        for (let key in playerAnimation) {
+            const image = new Image();
+            image.src = playerAnimation[key].imageSrc;
+            playerAnimation[key].image = image;
+        }
 
         this.height /= 3.47;
         this.width /= 3;
@@ -95,9 +144,11 @@ class PlayerEntity extends Entity {
                     break;
                 case 'w':
                     // check if player on ground
-                    if (this.velocity.y == 0)
-                        // jump
-                    this.velocity.y -= 15;
+                    console.log(this.velocity.y);
+                    if (this.velocity.y == 0.5 || this.velocity.y == 1) {
+                        this.velocity.y -= 10;
+                        this.jump = true;
+                    }
                     break;
             }
         });
@@ -114,16 +165,37 @@ class PlayerEntity extends Entity {
         });
     }
 
+    switchSprite(key) {
+        if (this.image == playerAnimation[key].image || !this.loaded) return;
+        this.image = playerAnimation[key].image;
+        this.frameRate = playerAnimation[key].frameRate;
+    }
+
     update() {
         super.update();
 
         this.velocity.x = 0;
-        if (this.keys.d.pressed)
-            this.velocity.x = 10;
-        if (this.keys.a.pressed)
-            this.velocity.x = -10;
+        if (this.keys.d.pressed) {
+            this.velocity.x = 5;
+            this.switchSprite("run_right");
+        }
+        if (this.keys.a.pressed) {
+            this.velocity.x = -5;
+            this.switchSprite("run_left");
+        }
+        
+        // change direction
+        if (this.velocity.x > 0)
+            this.last_direction = "right";
+        if (this.velocity.x < 0)
+            this.last_direction = "left";
+
+        if (this.velocity.x == 0 && (this.velocity.y == 0.5)) 
+            this.switchSprite("idle_" + this.last_direction);
+
+        if (this.jump) {
+            this.switchSprite("jump_" + this.last_direction);
+        }
     }
 } 
 
-class AIEntity extends Entity {
-}

@@ -13,19 +13,18 @@ class Tile {
 }
 
 class Level {
-    constructor({bg_img_path, floorCollisionData, platformCollisionData, entites}) {
-        this.entites = entites;
+    constructor({bg_img_path, floorCollisionData, platformCollisionData}) {
         this.image = new Image();
         this.image.src = bg_img_path;
         this.floorCollisionData = floorCollisionData;
         this.platformCollisionData = platformCollisionData;
 
         // initialize floor and platformer collision
-        this.floorCollisionTiles = [];
+        this.floorCollisionBlocks = [];
         for (var i = 0; i < this.floorCollisionData.length; i++) {
             for (var j = 0; j < this.floorCollisionData[0].length; ++j) {
                 if (this.floorCollisionData[i][j] == 66)
-                    this.floorCollisionTiles.push(
+                    this.floorCollisionBlocks.push(
                         new Tile({
                             position: {
                                 x: j * 16,
@@ -35,6 +34,16 @@ class Level {
                     );
             }
         }
+
+        this.player = new PlayerEntity({
+            position: {x : 100, y : 100}, 
+            imageSrc: "./assets/PlayerSprite/idle_right.png",
+            frameRate: 8,
+            scale: 1,
+            collisionBlocks: this.floorCollisionBlocks,
+            frameBuffer: 5 
+        });
+        this.entites = [this.player];
     }
 
     collision({object1, object2}) {
@@ -53,20 +62,20 @@ class Level {
         ctx.drawImage(this.image, 0, 0);
 
         this.entites[0].update();
+//
+//        this.floorCollisionBlocks.forEach((tile) => {
+//            if (this.collision({
+//                object1: this.entites[0].hitbox, 
+//                object2: tile
+//            })) {
+//                this.entites[0].updateHitBox();
+//                this.entites[0].collisionDetected();
+//                const offset = this.entites[0].hitbox.position.y - this.entites[0].position.y + this.entites[0].hitbox.height
+//                this.entites[0].position.y = tile.position.y - offset - 0.1;
+//            }
+//        });
 
-        this.floorCollisionTiles.forEach((tile) => {
-            if (this.collision({
-                object1: this.entites[0].hitbox, 
-                object2: tile
-            })) {
-                this.entites[0].updateHitBox();
-                this.entites[0].collisionDetected();
-                const offset = this.entites[0].hitbox.position.y - this.entites[0].position.y + this.entites[0].hitbox.height
-                this.entites[0].position.y = tile.position.y - offset - 0.01;
-            }
-        });
-
-        this.floorCollisionTiles.forEach((tile) => {
+        this.floorCollisionBlocks.forEach((tile) => {
             tile.draw();
         });
 
