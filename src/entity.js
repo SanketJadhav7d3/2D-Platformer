@@ -1,124 +1,128 @@
 
-// class Entity {
-//   constructor(position, context) {
-//     this.position = position;
-//     this.dimension = [100, 100];
-//     this.context = context;
-//     //animation some spritesheet stuff
-//   }
-// 
-//   draw() {
-//     this.context.fillStyle = "red";
-//     this.context.fillRect(...this.position, ...this.dimension);
-//   }
-// 
-//   update() {
-//     this.draw();
-//   }
-// }
-
 const gravity = 1;
 
-class Entity {
-  constructor(position, dimension, context) {
-    this.context = context;
-    this.position = position;
-    this.velocity = {
-      x : 0, 
-      y : 5,
+class Entity extends Sprite {
+    constructor({
+        position,
+        imageSrc,
+        frameRate,
+        scale
+    }) {
+        super({
+            position,
+            imageSrc,
+            frameRate,
+            scale
+        });
+        this.velocity = {
+            x : 0, 
+            y : 5,
+        };
+        this.hitbox = {
+            position:  {
+                x: this.position.x,
+                y: this.position.y
+            }, 
+            height: 10, 
+            width: 10
+        };
     }
-    this.dimension = dimension;
-  }
 
-  draw() {
-    this.context.fillStyle = "red";
-    this.context.fillRect(this.position.x, this.position.y, this.dimension.width, this.dimension.height);
-  }
+    updateHitBox() {
+        ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
+        ctx.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
 
-  //  collisionDetection(object) {
-  //    // vertical collision
-  //    return (this.position.y + this.dimension.height >= object.position.y &&
-  //            this.position.y <= object.position.y + object.dimension.height &&
-  //            this.position.x <= object.position.x + object.dimension.width &&
-  //            this.position.x + this.dimension.width >= object.position.x
-  //    );
-  // }
-  collisionDetected() {
-    this.velocity.y = 0;
-  }
+        this.hitbox = {
+            position:  {
+                x: this.position.x + 20,
+                y: this.position.y + 28
+            }, 
+            height: 32, 
+            width: 19
+        };
+    }
 
-  update() {
-    this.draw();
-    this.position.x += this.velocity.x;
-    this.applyGravity();
-  }
+    collisionDetected() {
+        this.velocity.y = 0;
+    }
 
-  applyGravity() {
-    this.position.y += this.velocity.y;
-    this.velocity.y += gravity;
-  }
+    update() {
+        this.draw();
+        this.updateFrames();
+        this.updateHitBox();
+        this.position.x += this.velocity.x;
+        this.applyGravity();
+    }
+
+    applyGravity() {
+        this.position.y += this.velocity.y;
+        this.velocity.y += gravity;
+    }
 }
 
+
 class PlayerEntity extends Entity {
-  constructor({position, dimension, context}) {
-    super(position, dimension, context);
-    this.keys = {
-      d : {
-        pressed : false,
-      }, 
-      a : {
-        pressed : false,
-      },
-    }  
+    constructor({
+        position,
+        imageSrc,
+        frameRate,
+        scale
+    }) {
+        super({
+            position,
+            imageSrc,
+            frameRate,
+        });
+        this.keys = {
+            d : {
+                pressed : false,
+            }, 
+            a : {
+                pressed : false,
+            },
+        }  
 
-    this.dimension.height /= 3.47;
-    this.dimension.width /= 3;
+        this.height /= 3.47;
+        this.width /= 3;
 
-    window.addEventListener("keydown", (event) => {
-      switch (event.key) {
-        case 'a':
-          this.keys.a.pressed = true;
-          break;
-        case 'd':
-          this.keys.d.pressed = true;
-          break;
-        case 'w':
-          // check if player on ground
-          if (this.velocity.y == 0)
-            this.velocity.y -= 25;
-          break;
-      }
-    });
+        window.addEventListener("keydown", (event) => {
+            switch (event.key) {
+                case 'a':
+                    this.keys.a.pressed = true;
+                    break;
+                case 'd':
+                    this.keys.d.pressed = true;
+                    break;
+                case 'w':
+                    // check if player on ground
+                    if (this.velocity.y == 0)
+                        // jump
+                    this.velocity.y -= 15;
+                    break;
+            }
+        });
 
-    window.addEventListener("keyup", (event) => {
-      switch (event.key) {
-        case 'a':
-          this.keys.a.pressed = false;
-          break;
-        case 'd':
-          this.keys.d.pressed = false;
-          break;
-      }
-    });
-  }
+        window.addEventListener("keyup", (event) => {
+            switch (event.key) {
+                case 'a':
+                    this.keys.a.pressed = false;
+                    break;
+                case 'd':
+                    this.keys.d.pressed = false;
+                    break;
+            }
+        });
+    }
 
-  update() {
-    super.update();
-    
-//
-//    this.collisionTiles.forEach(tile => {
-//      if (this.collisionDetection(tile)) {
-//        if (this.velocity.y > 0)
-//          this.velocity.y = 0
-//      }
-//    })
-//
-    this.velocity.x = 0;
-    if (this.keys.d.pressed)
-      this.velocity.x = 10;
-    if (this.keys.a.pressed)
-      this.velocity.x = -10;
-  }
+    update() {
+        super.update();
+
+        this.velocity.x = 0;
+        if (this.keys.d.pressed)
+            this.velocity.x = 10;
+        if (this.keys.a.pressed)
+            this.velocity.x = -10;
+    }
 } 
 
 class AIEntity extends Entity {
