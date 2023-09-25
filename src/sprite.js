@@ -24,8 +24,8 @@ class Sprite {
     }
 
     draw() {
-        ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
-        ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
+        // ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+        // ctx.fillRect(this.position.x, this.position.y, this.width, this.height);
 
         if (!this.loaded) return;
 
@@ -50,19 +50,25 @@ class Sprite {
             this.width,
             this.height
         );
-  }
+    }
 
     update() {
         this.draw();
         this.updateFrames();
     }
 
-    updateFrames() {
-        this.elapsedFrames++;
-
+    updateFramesRight() {
+        this.elapsedFrames = (this.elapsedFrames + 1) % this.frameBuffer;
         if (this.elapsedFrames % this.frameBuffer === 0) {
-            if (this.currentFrame < this.frameRate - 1) this.currentFrame++;
-            else this.currentFrame = 0;
+            this.currentFrame = (this.currentFrame + 1) % (this.frameRate - 1);
+        }
+    }
+
+    updateFramesLeft() {
+        this.elapsedFrames = (this.elapsedFrames + 1) % this.frameBuffer;
+        if (this.elapsedFrames % this.frameBuffer === 0) {
+            if (this.currentFrame <= 0) this.currentFrame = this.frameRate - 1;
+            this.currentFrame = this.currentFrame - 1;
         }
     }
 }

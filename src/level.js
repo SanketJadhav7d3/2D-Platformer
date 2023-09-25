@@ -41,7 +41,7 @@ class Level {
             frameRate: 8,
             scale: 1,
             collisionBlocks: this.floorCollisionBlocks,
-            frameBuffer: 5 
+            frameBuffer: 9
         });
         this.entites = [this.player];
     }
@@ -76,7 +76,7 @@ class Level {
 //        });
 
         this.floorCollisionBlocks.forEach((tile) => {
-            tile.draw();
+            // tile.draw();
         });
 
         ctx.restore();

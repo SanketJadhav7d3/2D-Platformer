@@ -24,9 +24,13 @@ const playerAnimation = {
         imageSrc: "./assets/PlayerSprite/jump_left.png",
         frameRate: 2,
     },
-    attack: {
-        imageSrc: "./assets/PlayerSprite/attack.png",
-        frameRate: 24,
+    attack_left: {
+        imageSrc: "./assets/PlayerSprite/attack_left.png",
+        frameRate: 8,
+    },
+    attack_right: {
+        imageSrc: "./assets/PlayerSprite/attack_right.png",
+        frameRate: 8,
     },
     hurt: {
         imageSrc: "./assets/PlayerSprite/hurt.png",

@@ -32,6 +32,7 @@ class Entity extends Sprite {
         this.collisionBlocks = collisionBlocks;
         this.jump = false;
         this.last_direction = "right";
+        this.is_attacking = false;
     }
 
     updateHitBox() {
@@ -84,9 +85,14 @@ class Entity extends Sprite {
     }
 
     update() {
-        this.draw();
+        if (this.currentAnimationKey == "attack_left") 
+            this.updateFramesLeft();
+        else
+            this.updateFramesRight();
+
         this.updateHitBox();
-        this.updateFrames();
+        this.draw();
+
         this.verticalCollision();
         this.position.x += this.velocity.x;
         this.applyGravity();
@@ -133,6 +139,7 @@ class PlayerEntity extends Entity {
 
         this.height /= 3.47;
         this.width /= 3;
+        this.currentAnimationKey = "idle_" + this.last_direction;
 
         window.addEventListener("keydown", (event) => {
             switch (event.key) {
@@ -144,11 +151,13 @@ class PlayerEntity extends Entity {
                     break;
                 case 'w':
                     // check if player on ground
-                    console.log(this.velocity.y);
                     if (this.velocity.y == 0.5 || this.velocity.y == 1) {
                         this.velocity.y -= 10;
                         this.jump = true;
                     }
+                    break;
+                case 'e':
+                    this.is_attacking = true;
                     break;
             }
         });
@@ -160,6 +169,9 @@ class PlayerEntity extends Entity {
                     break;
                 case 'd':
                     this.keys.d.pressed = false;
+                    break;
+                case 'e':
+                    this.is_attacking = false;
                     break;
             }
         });
@@ -176,12 +188,14 @@ class PlayerEntity extends Entity {
 
         this.velocity.x = 0;
         if (this.keys.d.pressed) {
-            this.velocity.x = 5;
-            this.switchSprite("run_right");
+            this.velocity.x = 3;
+            this.currentAnimationKey = "run_" + this.last_direction;
+            this.switchSprite(this.currentAnimationKey);
         }
         if (this.keys.a.pressed) {
-            this.velocity.x = -5;
-            this.switchSprite("run_left");
+            this.velocity.x = -3;
+            this.currentAnimationKey = "run_" + this.last_direction;
+            this.switchSprite(this.currentAnimationKey);
         }
         
         // change direction
@@ -190,12 +204,20 @@ class PlayerEntity extends Entity {
         if (this.velocity.x < 0)
             this.last_direction = "left";
 
-        if (this.velocity.x == 0 && (this.velocity.y == 0.5)) 
-            this.switchSprite("idle_" + this.last_direction);
+        if (this.is_attacking) {
+            this.currentAnimationKey = "attack_" + this.last_direction;
+            this.switchSprite(this.currentAnimationKey);
+            return;
+        }
 
         if (this.jump) {
             this.switchSprite("jump_" + this.last_direction);
+            return;
         }
+
+        if (this.velocity.x == 0 && (this.velocity.y == 0.5)) 
+            this.switchSprite("idle_" + this.last_direction);
+
     }
 } 
 
