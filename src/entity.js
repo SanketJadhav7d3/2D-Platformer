@@ -151,7 +151,7 @@ class PlayerEntity extends Entity {
                     break;
                 case 'w':
                     // check if player on ground
-                    if (this.velocity.y == 0.5 || this.velocity.y == 1) {
+                    if (!this.jump) {
                         this.velocity.y -= 10;
                         this.jump = true;
                     }
@@ -179,6 +179,8 @@ class PlayerEntity extends Entity {
 
     switchSprite(key) {
         if (this.image == playerAnimation[key].image || !this.loaded) return;
+        this.currentFrame = 0; // makes sure that next sprite animation 
+                                // starts from the start of the spritesheet
         this.image = playerAnimation[key].image;
         this.frameRate = playerAnimation[key].frameRate;
     }
@@ -210,6 +212,7 @@ class PlayerEntity extends Entity {
             return;
         }
 
+        console.log(this.jump);
         if (this.jump) {
             this.switchSprite("jump_" + this.last_direction);
             return;
@@ -217,7 +220,6 @@ class PlayerEntity extends Entity {
 
         if (this.velocity.x == 0 && (this.velocity.y == 0.5)) 
             this.switchSprite("idle_" + this.last_direction);
-
     }
 } 
 
