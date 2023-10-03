@@ -157,7 +157,8 @@ class PlayerEntity extends Entity {
                     }
                     break;
                 case 'e':
-                    this.is_attacking = true;
+                    if (!this.keys.a.pressed && !this.keys.d.pressed && !this.jump)
+                        this.is_attacking = true;
                     break;
             }
         });
@@ -190,12 +191,12 @@ class PlayerEntity extends Entity {
 
         this.velocity.x = 0;
         if (this.keys.d.pressed) {
-            this.velocity.x = 3;
+            this.velocity.x = 5;
             this.currentAnimationKey = "run_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
         }
         if (this.keys.a.pressed) {
-            this.velocity.x = -3;
+            this.velocity.x = -5;
             this.currentAnimationKey = "run_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
         }

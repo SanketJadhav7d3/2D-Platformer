@@ -41,7 +41,7 @@ class Level {
             frameRate: 8,
             scale: 1,
             collisionBlocks: this.floorCollisionBlocks,
-            frameBuffer: 9
+            frameBuffer: 6
         });
         this.entites = [this.player];
     }
