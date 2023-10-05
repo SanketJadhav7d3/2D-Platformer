@@ -215,7 +215,6 @@ class PlayerEntity extends Entity {
             return;
         }
 
-        console.log(this.jump);
         if (this.jump) {
             this.switchSprite("jump_" + this.last_direction);
             return;

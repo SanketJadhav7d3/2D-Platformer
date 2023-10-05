@@ -1,8 +1,18 @@
 
 body {
-  padding: 0px;
-  margin: 0px;
+    padding: 0px;
+    margin: 0px;
 }
 
 canvas {
+}
+
+#fullscreen-button {
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    background: transparent;
+    border: none;
+    font-family: 'Press Start 2P', cursive;
+    font-size: 20px;
 }

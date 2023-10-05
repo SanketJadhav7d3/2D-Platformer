@@ -2,6 +2,21 @@
 const canvas = document.querySelector("canvas");
 const ctx = canvas.getContext('2d');
 
+const button = document.getElementById('fullscreen-button')
+
+button.addEventListener('click', () => {
+    console.log("button");
+    if (canvas.requestFullscreen) {
+        canvas.requestFullscreen();
+    } else if (canvas.webkitRequestFullscreen) { /* Safari */
+            canvas.webkitRequestFullscreen();
+    } else if (canvas.msRequestFullscreen) { /* IE11 */
+            canvas.msRequestFullscreen();
+    } else if (canvas.mozRequestFullScreen) {
+        canvas.mozRequestFullScreen();   /* morzilla */
+    }
+});
+
 canvas.width = window.innerWidth;
 canvas.height = window.innerHeight;
 
@@ -13,7 +28,6 @@ const level = new Level({
     floorCollisionData: floorCollision,
     platformCollisionData: platformCollision,
 });
-
 
 function run() {
     window.requestAnimationFrame(run);

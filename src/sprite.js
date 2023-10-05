@@ -16,7 +16,6 @@ class Sprite {
         this.frameBuffer = frameBuffer;
         this.elapsedFrames = 0;
         this.image.onload = () => {
-            console.log("image loaded");
             this.width = (this.image.width / this.frameRate) * this.scale;
             this.height = this.image.height * this.scale;
             this.loaded = true;
