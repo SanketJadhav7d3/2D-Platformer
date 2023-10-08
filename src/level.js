@@ -18,6 +18,17 @@ class Level {
         this.image.src = bg_img_path;
         this.floorCollisionData = floorCollisionData;
         this.platformCollisionData = platformCollisionData;
+        this.camera = {
+            position: {
+                x: 0, 
+                y: 0
+            }
+        }
+
+        this.scalingFactor = {
+            x: 3,
+            y: 3.47
+        }
 
         // initialize floor and platformer collision
         this.floorCollisionBlocks = [];
@@ -46,6 +57,29 @@ class Level {
         this.entites = [this.player];
     }
 
+    shouldPanToTheLeft() {
+        if (!this.player.keys.d.pressed) return;
+
+        const playerCameraBox = this.player.cameraBox;
+
+        if (playerCameraBox.position.x + playerCameraBox.width >= this.image.width - 20)
+            return;
+
+        if (this.camera.position.x + playerCameraBox.position.x + playerCameraBox.width >= window.innerWidth / 3)
+            this.camera.position.x -= this.player.velocity.x;
+    }
+
+    shouldPanToTheRigth() {
+        if (!this.player.keys.a.pressed) return;
+
+        const playerCameraBox = this.player.cameraBox;
+
+        if (playerCameraBox.position.x <= 0) return;
+
+        if (playerCameraBox.position.x <= Math.abs(this.camera.position.x))
+            this.camera.position.x -= this.player.velocity.x;
+    }
+
     collision({object1, object2}) {
         return (
             object1.position.y + object1.height >= object2.position.y &&
@@ -57,11 +91,16 @@ class Level {
 
     drawBackground() {
         ctx.save();
-        ctx.scale(3, 3.47);
+        ctx.scale(this.scalingFactor.x, this.scalingFactor.y);
         // draw floorCollision and platformCollision
+        ctx.translate(this.camera.position.x, this.camera.position.y);
         ctx.drawImage(this.image, 0, 0);
 
-        this.entites[0].update();
+        this.shouldPanToTheRigth();
+        this.shouldPanToTheLeft();
+
+
+        this.player.update({ width: this.image.width, height: this.image.height});
 //
 //        this.floorCollisionBlocks.forEach((tile) => {
 //            if (this.collision({

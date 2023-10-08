@@ -36,9 +36,6 @@ class Entity extends Sprite {
     }
 
     updateHitBox() {
-        // ctx.fillStyle = "rgba(255, 0, 0, 0.5)";
-        // ctx.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
-
         this.hitbox = {
             position:  {
                 x: this.position.x + 110,
@@ -84,7 +81,7 @@ class Entity extends Sprite {
             this.velocity.y = 0;
     }
 
-    update() {
+    update({ width, height }) {
         if (this.currentAnimationKey == "attack_left") 
             this.updateFramesLeft();
         else
@@ -94,8 +91,16 @@ class Entity extends Sprite {
         this.draw();
 
         this.verticalCollision();
+        
+        // stop player from going out of the screen
+        if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
+        || (this.keys.a.pressed && this.hitbox.position.x <= 0))
+            this.velocity.x = 0;
+
         this.position.x += this.velocity.x;
+
         this.applyGravity();
+
     }
 
     applyGravity() {
@@ -178,6 +183,26 @@ class PlayerEntity extends Entity {
                     break;
             }
         });
+
+        this.cameraBox = {
+            position: {
+                x: this.position.x, 
+                y: this.position.y
+            }, 
+            width: 200, 
+            height: this.image.height
+        }
+    }
+
+    updateCameraBox() {
+        this.cameraBox = {
+            position: {
+                x: this.position.x - 70, 
+                y: this.position.y
+            }, 
+            width: 400, 
+            height: this.image.height
+        }
     }
 
     switchSprite(key) {
@@ -188,8 +213,11 @@ class PlayerEntity extends Entity {
         this.frameRate = playerAnimation[key].frameRate;
     }
 
-    update() {
-        super.update();
+    update({ width, height }) {
+
+        // draw camerabox
+        super.update({ width, height });
+        this.updateCameraBox();
 
         this.velocity.x = 0;
         if (this.keys.d.pressed) {
