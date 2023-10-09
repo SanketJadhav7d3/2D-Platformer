@@ -59,14 +59,14 @@ class Sprite {
     updateFramesRight() {
         this.elapsedFrames = (this.elapsedFrames + 1) % this.frameBuffer;
         if (this.elapsedFrames % this.frameBuffer === 0) {
-            this.currentFrame = (this.currentFrame + 1) % (this.frameRate - 1);
+            this.currentFrame = (this.currentFrame + 1) % (this.frameRate);
         }
     }
 
     updateFramesLeft() {
         this.elapsedFrames = (this.elapsedFrames + 1) % this.frameBuffer;
         if (this.elapsedFrames % this.frameBuffer === 0) {
-            if (this.currentFrame <= 0) this.currentFrame = this.frameRate - 1;
+            if (this.currentFrame <= 0) this.currentFrame = this.frameRate;
             this.currentFrame = this.currentFrame - 1;
         }
     }

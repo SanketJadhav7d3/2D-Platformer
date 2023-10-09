@@ -38,24 +38,79 @@ const playerAnimation = {
     }
 };
 
-const beardedVillager = {
-}
-
-const woman = {
+const beardedManAnimation = {
     idle_right: {
-        imageSrc: "./assets/Villagers/woman/idle-right.png",
-        frameRate: 7
+        imageSrc: "./assets/Villagers/bearded/idle_right.png",
+        frameRate: 5
     }, 
     idle_left: {
-        imageSrc: "./assets/Villagers/woman/idle-left.png",
-        frameRate: 7
+        imageSrc: "./assets/Villagers/bearded/idle_left.png",
+        frameRate: 5
     },
     walk_left: {
-        imageSrc: "./assets/Villagers/woman/walk-left.png",
+        imageSrc: "./assets/Villagers/bearded/walk_left.png",
         frameRate: 6
     },
     walk_right: {
-        imageSrc: "./assets/Villagers/woman/walk-right.png",
+        imageSrc: "./assets/Villagers/bearded/walk_wright.png",
+        frameRate: 6
+    }
+}
+
+const hatManAnimation = {
+    idle_right: {
+        imageSrc: "./assets/Villagers/hatman/idle_right.png",
+        frameRate: 4
+    }, 
+    idle_left: {
+        imageSrc: "./assets/Villagers/hatman/idle_left.png",
+        frameRate: 4
+    },
+    walk_left: {
+        imageSrc: "./assets/Villagers/hatman/walk_left.png",
+        frameRate: 6
+    },
+    walk_right: {
+        imageSrc: "./assets/Villagers/hatman/walk_wright.png",
+        frameRate: 6
+    }
+}
+
+
+const oldManAnimation = {
+    idle_right: {
+        imageSrc: "./assets/Villagers/oldman/idle_right.png",
+        frameRate: 8
+    }, 
+    idle_left: {
+        imageSrc: "./assets/Villagers/oldman/idle_left.png",
+        frameRate: 8
+    },
+    walk_left: {
+        imageSrc: "./assets/Villagers/oldman/walk_left.png",
+        frameRate: 12
+    },
+    walk_right: {
+        imageSrc: "./assets/Villagers/oldman/walk_wright.png",
+        frameRate: 12
+    }
+}
+
+const womanAnimation = {
+    idle_right: {
+        imageSrc: "./assets/Villagers/woman/idle_right.png",
+        frameRate: 7
+    }, 
+    idle_left: {
+        imageSrc: "./assets/Villagers/woman/idle_left.png",
+        frameRate: 7
+    },
+    walk_left: {
+        imageSrc: "./assets/Villagers/woman/walk_left.png",
+        frameRate: 6
+    },
+    walk_right: {
+        imageSrc: "./assets/Villagers/woman/walk_wright.png",
         frameRate: 6
     }
 }

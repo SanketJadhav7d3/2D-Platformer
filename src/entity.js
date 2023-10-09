@@ -38,14 +38,6 @@ class Entity extends Sprite {
     }
 
     updateHitBox() {
-        this.hitbox = {
-            position:  {
-                x: this.position.x + 110,
-                y: this.position.y + (250 / 2) - 7
-            }, 
-            height: 48, 
-            width: 40
-        };
     }
 
     verticalCollision() {
@@ -83,6 +75,22 @@ class Entity extends Sprite {
             this.velocity.y = 0;
     }
 
+    applyGravity() {
+        this.velocity.y += gravity;
+        this.position.y += this.velocity.y;
+    }
+
+    updateHitBox() {
+        this.hitbox = {
+            position:  {
+                x: this.position.x + 110,
+                y: this.position.y + (250 / 2) - 7
+            }, 
+            height: 48, 
+            width: 40
+        };
+    }
+
     update({ width, height }) {
         if (this.currentAnimationKey == "attack_left") 
             this.updateFramesLeft();
@@ -91,24 +99,11 @@ class Entity extends Sprite {
 
         this.updateHitBox();
         this.draw();
-
         this.verticalCollision();
-        
-        // stop player from going out of the screen
-        if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
-        || (this.keys.a.pressed && this.hitbox.position.x <= 0))
-            this.velocity.x = 0;
-
         this.position.x += this.velocity.x;
-
         this.applyGravity();
-
     }
 
-    applyGravity() {
-        this.velocity.y += gravity;
-        this.position.y += this.velocity.y;
-    }
 
     switchSprite(key) {
         if (this.image == this.animation[key].image || !this.loaded) return;
@@ -219,7 +214,6 @@ class PlayerEntity extends Entity {
     }
 
     update({ width, height }) {
-
         // draw camerabox
         super.update({ width, height });
         this.updateCameraBox();
@@ -235,6 +229,10 @@ class PlayerEntity extends Entity {
             this.currentAnimationKey = "run_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
         }
+
+        if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
+        || (this.keys.a.pressed && this.hitbox.position.x <= 0))
+            this.velocity.x = 0;
         
         // change direction
         if (this.velocity.x > 0)
@@ -267,7 +265,8 @@ class AIEntity extends Entity {
         scale,
         collisionBlocks,
         frameBuffer, 
-        animation
+        animation, 
+        delayAfter = 1
     }) {
         super({
             position,
@@ -279,5 +278,41 @@ class AIEntity extends Entity {
         });
         this.height /= 3.47;
         this.width /= 3;
+        this.hitbox = {
+            position:  {
+                x: this.position.x,
+                y: this.position.y
+            }, 
+            height: 11, 
+            width: 10
+        };
+        this.frames = 0;
+        this.delayAfter = delayAfter;
+    }
+
+    updateHitBox() {
+        ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+        ctx.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+        this.hitbox = {
+            position:  {
+                x: this.position.x,
+                y: this.position.y
+            }, 
+            height: 50, 
+            width: 40
+        };
+    }
+
+    updateFramesRight() {
+        if (this.currentFrame != this.frameRate - 1)
+            super.updateFramesRight();
+        else {
+            this.frames = this.frames += 1;
+            this.currentFrame = this.frameRate - 1;
+            if (this.frames == this.delayAfter) {
+                this.frames = 0;
+                this.currentFrame = 0;
+            }
+        }
     }
 }

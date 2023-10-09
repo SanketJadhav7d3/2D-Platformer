@@ -56,6 +56,49 @@ class Level {
             frameBuffer: 6, 
             animation: playerAnimation
         });
+
+        this.woman = new AIEntity({
+            position: {x : 200, y : 100}, 
+            imageSrc: "./assets/villagers/woman/idle_right.png",
+            frameRate: 7,
+            scale: 1,
+            collisionBlocks: this.floorCollisionBlocks,
+            frameBuffer: 6, 
+            animation: womanAnimation
+        });
+
+        this.hatMan = new AIEntity({
+            position: {x : 800, y : 100}, 
+            imageSrc: "./assets/villagers/hatman/idle_right.png",
+            frameRate: 4,
+            scale: 1,
+            collisionBlocks: this.floorCollisionBlocks,
+            frameBuffer: 13, 
+            animation: hatManAnimation
+        });
+
+        this.oldman = new AIEntity({
+            position: {x : 500, y : 100}, 
+            imageSrc: "./assets/villagers/oldman/idle_right.png",
+            frameRate: 8,
+            scale: 1,
+            collisionBlocks: this.floorCollisionBlocks,
+            frameBuffer: 6, 
+            animation: oldManAnimation, 
+            delayAfter: 200
+        });
+
+        this.beardedMan = new AIEntity({
+            position: {x : 900, y : 100}, 
+            imageSrc: "./assets/villagers/bearded/idle_right.png",
+            frameRate: 5,
+            scale: 1,
+            collisionBlocks: this.floorCollisionBlocks,
+            frameBuffer: 6, 
+            animation: beardedManAnimation, 
+            delayAfter: 200
+        });
+
         this.entites = [this.player];
     }
 
@@ -101,7 +144,10 @@ class Level {
         this.shouldPanToTheRigth();
         this.shouldPanToTheLeft();
 
-
+        this.woman.update({ width: this.image.width, height: this.image.height});
+        this.oldman.update({ width: this.image.width, height: this.image.height});
+        this.beardedMan.update({ width: this.image.width, height: this.image.height});
+        this.hatMan.update({ width: this.image.width, height: this.image.height});
         this.player.update({ width: this.image.width, height: this.image.height});
 //
 //        this.floorCollisionBlocks.forEach((tile) => {
@@ -116,9 +162,9 @@ class Level {
 //            }
 //        });
 
-        this.floorCollisionBlocks.forEach((tile) => {
+        // this.floorCollisionBlocks.forEach((tile) => {
             // tile.draw();
-        });
+        // });
 
         ctx.restore();
     }
