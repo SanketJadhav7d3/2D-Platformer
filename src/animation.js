@@ -37,3 +37,26 @@ const playerAnimation = {
         frameRate: 24,
     }
 };
+
+const beardedVillager = {
+}
+
+const woman = {
+    idle_right: {
+        imageSrc: "./assets/Villagers/woman/woman-idle-right.png",
+        frameRate: 7
+    }, 
+    idle_left: {
+        imageSrc: "./assets/Villagers/woman/woman-idle-left.png",
+        frameRate: 7
+    },
+    walk_left: {
+        imageSrc: "./assets/Villagers/woman/woman-walk-left.png",
+        frameRate: 6
+    },
+    walk_right: {
+        imageSrc: "./assets/Villagers/woman/woman-walk-right.png",
+        frameRate: 6
+    }
+}
+

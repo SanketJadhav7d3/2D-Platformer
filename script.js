@@ -13,8 +13,11 @@ button.addEventListener('click', () => {
     } else if (canvas.msRequestFullscreen) { /* IE11 */
             canvas.msRequestFullscreen();
     } else if (canvas.mozRequestFullScreen) {
+
         canvas.mozRequestFullScreen();   /* morzilla */
+
     }
+
 });
 
 canvas.width = window.innerWidth;
