@@ -8,7 +8,8 @@ class Entity extends Sprite {
         frameRate,
         scale, 
         collisionBlocks,
-        frameBuffer
+        frameBuffer, 
+        animation
     }) {
         super({
             position,
@@ -33,6 +34,7 @@ class Entity extends Sprite {
         this.jump = false;
         this.last_direction = "right";
         this.is_attacking = false;
+        this.animation = animation;
     }
 
     updateHitBox() {
@@ -107,6 +109,15 @@ class Entity extends Sprite {
         this.velocity.y += gravity;
         this.position.y += this.velocity.y;
     }
+
+    switchSprite(key) {
+        if (this.image == this.animation[key].image || !this.loaded) return;
+        this.currentFrame = 0; // makes sure that next sprite animation 
+                                // starts from the start of the spritesheet
+        this.image = this.animation[key].image;
+        this.frameRate = this.animation[key].frameRate;
+    }
+
 }
 
 
@@ -117,14 +128,16 @@ class PlayerEntity extends Entity {
         frameRate,
         scale,
         collisionBlocks,
-        frameBuffer
+        frameBuffer, 
+        animation
     }) {
         super({
             position,
             imageSrc,
             frameRate,
             collisionBlocks,
-            frameBuffer
+            frameBuffer, 
+            animation
         });
         this.keys = {
             d : {
@@ -136,10 +149,10 @@ class PlayerEntity extends Entity {
         };
 
         // animations
-        for (let key in playerAnimation) {
+        for (let key in this.animation) {
             const image = new Image();
-            image.src = playerAnimation[key].imageSrc;
-            playerAnimation[key].image = image;
+            image.src = this.animation[key].imageSrc;
+            this.animation[key].image = image;
         }
 
         this.height /= 3.47;
@@ -205,14 +218,6 @@ class PlayerEntity extends Entity {
         }
     }
 
-    switchSprite(key) {
-        if (this.image == playerAnimation[key].image || !this.loaded) return;
-        this.currentFrame = 0; // makes sure that next sprite animation 
-                                // starts from the start of the spritesheet
-        this.image = playerAnimation[key].image;
-        this.frameRate = playerAnimation[key].frameRate;
-    }
-
     update({ width, height }) {
 
         // draw camerabox
@@ -253,3 +258,26 @@ class PlayerEntity extends Entity {
     }
 } 
 
+
+class AIEntity extends Entity {
+    constructor({
+        position,
+        imageSrc,
+        frameRate,
+        scale,
+        collisionBlocks,
+        frameBuffer, 
+        animation
+    }) {
+        super({
+            position,
+            imageSrc,
+            frameRate,
+            collisionBlocks,
+            frameBuffer, 
+            animation
+        });
+        this.height /= 3.47;
+        this.width /= 3;
+    }
+}

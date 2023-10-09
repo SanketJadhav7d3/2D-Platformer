@@ -46,13 +46,15 @@ class Level {
             }
         }
 
+
         this.player = new PlayerEntity({
             position: {x : 100, y : 100}, 
             imageSrc: "./assets/PlayerSprite/idle_right.png",
             frameRate: 8,
             scale: 1,
             collisionBlocks: this.floorCollisionBlocks,
-            frameBuffer: 6
+            frameBuffer: 6, 
+            animation: playerAnimation
         });
         this.entites = [this.player];
     }
