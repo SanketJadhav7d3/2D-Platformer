@@ -291,8 +291,8 @@ class AIEntity extends Entity {
     }
 
     updateHitBox() {
-        ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
-        ctx.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+        // ctx.fillStyle = "rgba(0, 255, 0, 0.5)";
+        // ctx.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
         this.hitbox = {
             position:  {
                 x: this.position.x,

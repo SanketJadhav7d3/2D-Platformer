@@ -1,18 +1,69 @@
 
 body {
+    background-repeat: no-repeat; 
+    background-size: cover;
     padding: 0px;
     margin: 0px;
+}
+
+@font-face {
+    font-family: gothic;
+    src: url('./assets/font/Gothic Pixels.ttf')
 }
 
 canvas {
 }
 
-#fullscreen-button {
+.hidden {
+    opacity: 0;
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeOut {
+  0% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.fade-in {
+    animation: fadeIn 7s;
+}
+
+.fade-out {
+    animation: fadeOut 2s;
+    opacity: 0;
+}
+
+#opening-window {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    position: absolute;
+    background: rgba(0, 0, 0, 1);
+    font-family: gothic;
+    color: #FFFF00;
+    font-size: 100px;
+}
+
+#sub_heading {
+    font-family: gothic;
+    font-size: 20px;
+    color: #ffff00;
+}
+
+.fullscreen-button {
     position: absolute;
     right: 10px;
-    top: 10px;
+    top: 30px;
     background: transparent;
     border: none;
-    font-family: 'Press Start 2P', cursive;
-    font-size: 20px;
+    font-family: gothic;
+    color: #FFFF00;
+    font-size: 40px;
 }

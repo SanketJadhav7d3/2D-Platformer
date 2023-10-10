@@ -18,6 +18,7 @@ class Level {
         this.image.src = bg_img_path;
         this.floorCollisionData = floorCollisionData;
         this.platformCollisionData = platformCollisionData;
+        this.hasGameStarted = false;
         this.camera = {
             position: {
                 x: 0, 
@@ -144,12 +145,14 @@ class Level {
         this.shouldPanToTheRigth();
         this.shouldPanToTheLeft();
 
-        this.woman.update({ width: this.image.width, height: this.image.height});
-        this.oldman.update({ width: this.image.width, height: this.image.height});
-        this.beardedMan.update({ width: this.image.width, height: this.image.height});
-        this.hatMan.update({ width: this.image.width, height: this.image.height});
-        this.player.update({ width: this.image.width, height: this.image.height});
-//
+        if (this.hasGameStarted) {
+            this.woman.update({ width: this.image.width, height: this.image.height});
+            this.oldman.update({ width: this.image.width, height: this.image.height});
+            this.beardedMan.update({ width: this.image.width, height: this.image.height});
+            this.hatMan.update({ width: this.image.width, height: this.image.height});
+            this.player.update({ width: this.image.width, height: this.image.height});
+        }
+
 //        this.floorCollisionBlocks.forEach((tile) => {
 //            if (this.collision({
 //                object1: this.entites[0].hitbox, 
