@@ -1,21 +1,39 @@
 
 body {
-    background-repeat: no-repeat; 
-    background-size: cover;
+    background-color: black;
     padding: 0px;
     margin: 0px;
 }
 
 @font-face {
     font-family: gothic;
-    src: url('./assets/font/Gothic Pixels.ttf')
+    src: url('./assets/font/GothicPixels.ttf')
 }
 
 canvas {
 }
 
+.canvas-container {
+    background-color: black;
+}
+
+#mute-button {
+    position: absolute;
+    right: 300px;
+    top: 26px;
+    height: 60px;
+    width: 60px;
+    background: transparent;
+    border: none;
+    background: url("./assets/icons/volume-2.svg");
+}
+
 .hidden {
     opacity: 0;
+}
+
+.hidden-button {
+    opacity: 0; 
 }
 
 @keyframes fadeIn {
@@ -53,7 +71,7 @@ canvas {
 
 #sub_heading {
     font-family: gothic;
-    font-size: 20px;
+    font-size: 30px;
     color: #ffff00;
 }
 

@@ -13,12 +13,13 @@ class Tile {
 }
 
 class Level {
-    constructor({bg_img_path, floorCollisionData, platformCollisionData}) {
+    constructor({bg_img_path, floorCollisionData, platformCollisionData, context}) {
         this.image = new Image();
         this.image.src = bg_img_path;
         this.floorCollisionData = floorCollisionData;
         this.platformCollisionData = platformCollisionData;
         this.hasGameStarted = false;
+        this.context = context;
         this.camera = {
             position: {
                 x: 0, 
@@ -47,7 +48,6 @@ class Level {
             }
         }
 
-
         this.player = new PlayerEntity({
             position: {x : 100, y : 100}, 
             imageSrc: "./assets/PlayerSprite/idle_right.png",
@@ -55,7 +55,8 @@ class Level {
             scale: 1,
             collisionBlocks: this.floorCollisionBlocks,
             frameBuffer: 6, 
-            animation: playerAnimation
+            animation: playerAnimation, 
+            context: this.context
         });
 
         this.woman = new AIEntity({
@@ -65,7 +66,8 @@ class Level {
             scale: 1,
             collisionBlocks: this.floorCollisionBlocks,
             frameBuffer: 6, 
-            animation: womanAnimation
+            animation: womanAnimation, 
+            context: this.context
         });
 
         this.hatMan = new AIEntity({
@@ -75,7 +77,8 @@ class Level {
             scale: 1,
             collisionBlocks: this.floorCollisionBlocks,
             frameBuffer: 13, 
-            animation: hatManAnimation
+            animation: hatManAnimation, 
+            context: this.context
         });
 
         this.oldman = new AIEntity({
@@ -86,7 +89,8 @@ class Level {
             collisionBlocks: this.floorCollisionBlocks,
             frameBuffer: 6, 
             animation: oldManAnimation, 
-            delayAfter: 200
+            delayAfter: 200, 
+            context: this.context
         });
 
         this.beardedMan = new AIEntity({
@@ -97,7 +101,8 @@ class Level {
             collisionBlocks: this.floorCollisionBlocks,
             frameBuffer: 6, 
             animation: beardedManAnimation, 
-            delayAfter: 200
+            delayAfter: 200, 
+            context: this.context
         });
 
         this.entites = [this.player];
@@ -136,11 +141,11 @@ class Level {
     }
 
     drawBackground() {
-        ctx.save();
-        ctx.scale(this.scalingFactor.x, this.scalingFactor.y);
+        this.context.save();
+        this.context.scale(this.scalingFactor.x, this.scalingFactor.y);
         // draw floorCollision and platformCollision
-        ctx.translate(this.camera.position.x, this.camera.position.y);
-        ctx.drawImage(this.image, 0, 0);
+        this.context.translate(this.camera.position.x, this.camera.position.y);
+        this.context.drawImage(this.image, 0, 0);
 
         this.shouldPanToTheRigth();
         this.shouldPanToTheLeft();
@@ -169,6 +174,6 @@ class Level {
             // tile.draw();
         // });
 
-        ctx.restore();
+        this.context.restore();
     }
 }

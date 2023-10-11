@@ -9,14 +9,16 @@ class Entity extends Sprite {
         scale, 
         collisionBlocks,
         frameBuffer, 
-        animation
+        animation, 
+        context
     }) {
         super({
             position,
             imageSrc,
             frameRate,
+            frameBuffer, 
             scale,
-            frameBuffer
+            context
         });
         this.velocity = {
             x : 0, 
@@ -124,7 +126,8 @@ class PlayerEntity extends Entity {
         scale,
         collisionBlocks,
         frameBuffer, 
-        animation
+        animation, 
+        context
     }) {
         super({
             position,
@@ -132,7 +135,8 @@ class PlayerEntity extends Entity {
             frameRate,
             collisionBlocks,
             frameBuffer, 
-            animation
+            animation, 
+            context
         });
         this.keys = {
             d : {
@@ -220,12 +224,12 @@ class PlayerEntity extends Entity {
 
         this.velocity.x = 0;
         if (this.keys.d.pressed) {
-            this.velocity.x = 5;
+            this.velocity.x = 6;
             this.currentAnimationKey = "run_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
         }
         if (this.keys.a.pressed) {
-            this.velocity.x = -5;
+            this.velocity.x = -6;
             this.currentAnimationKey = "run_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
         }
@@ -266,7 +270,8 @@ class AIEntity extends Entity {
         collisionBlocks,
         frameBuffer, 
         animation, 
-        delayAfter = 1
+        delayAfter = 1, 
+        context
     }) {
         super({
             position,
@@ -274,7 +279,8 @@ class AIEntity extends Entity {
             frameRate,
             collisionBlocks,
             frameBuffer, 
-            animation
+            animation, 
+            context
         });
         this.height /= 3.47;
         this.width /= 3;
