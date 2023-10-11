@@ -5,9 +5,11 @@ class Sprite {
         frameRate = 1,
         frameBuffer = 3,
         scale = 1,
+        context
     }) {
         this.position = position;
         this.scale = scale;
+        this.context = context;
         this.loaded = false;
         this.image = new Image();
         this.image.src = imageSrc;
@@ -38,7 +40,7 @@ class Sprite {
         }
 
         // ctx.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
-        ctx.drawImage(
+        this.context.drawImage(
             this.image,
             cropbox.position.x,
             cropbox.position.y,

@@ -1,26 +1,26 @@
 
-const canvas = document.querySelector("canvas");
-const ctx = canvas.getContext('2d');
+const fullScreenButton = document.getElementsByClassName("hidden-button")[0];
 
-const button = document.createElement("button");
-button.classList.add("fullscreen-button");
+const musicPlayer = new BackgroundMusic();
 
-button.addEventListener('click', () => {
-    if (canvas.requestFullscreen) {
-        canvas.requestFullscreen();
-    } else if (canvas.webkitRequestFullscreen) { /* Safari */
-            canvas.webkitRequestFullscreen();
-    } else if (canvas.msRequestFullscreen) { /* IE11 */
-            canvas.msRequestFullscreen();
-    } else if (canvas.mozRequestFullScreen) {
-        canvas.mozRequestFullScreen();   /* morzilla */
+const canvasContainer = document.getElementsByClassName("canvas-container")[0];
+
+fullScreenButton.addEventListener('click', () => {
+    if (canvasContainer.requestFullscreen) {
+        canvasContainer.requestFullscreen();
+    } else if (canvasContainer.webkitRequestFullscreen) { /* Safari */
+        canvasContainer.webkitRequestFullscreen();
+    } else if (canvasContainer.msRequestFullscreen) { /* IE11 */
+        canvasContainer.msRequestFullscreen();
+    } else if (canvasContainer.mozRequestFullScreen) {
+        canvasContainer.mozRequestFullScreen();   /* morzilla */
     }
 });
 
-canvas.width = window.innerWidth;
-canvas.height = window.innerHeight;
+// canvas.width = window.innerWidth;
+// canvas.height = window.innerHeight;
 
-canvas.style = "position:absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);";
+// canvas.style = "position:absolute; left: 50%; top: 50%; transform: translate(-50%, -50%);";
 
 function displayOpening() {
     const openingWindow = document.getElementById('opening-window');
@@ -52,19 +52,31 @@ function runVillage() {
 }
 
 window.onload = () => {
-    openingMusic.play();
+    console.log("hwat");
+    if (canvasContainer.requestFullscreen) {
+        canvasContainer.requestFullscreen();
+    } else if (canvasContainer.webkitRequestFullscreen) { /* Safari */
+        canvasContainer.webkitRequestFullscreen();
+    } else if (canvasContainer.msRequestFullscreen) { /* IE11 */
+        canvasContainer.msRequestFullscreen();
+    } else if (canvasContainer.mozRequestFullScreen) {
+        canvasContainer.mozRequestFullScreen();   /* morzilla */
+    }
+    musicPlayer.openingMusic.play();
     displayOpening();
 }
 
 window.onkeydown = (event) => {
     if (event.key == " ") {
         if (!village.hasGameStarted) {
-            openingMusic.pause();
-            transitionMusic.play();
-            removeOpening();
             village.hasGameStarted = true;
-            creepyMusic.play();
-            creepyMusic.loop = true;
+            musicPlayer.openingMusic.pause();
+            musicPlayer.transitionMusic.play();
+            removeOpening();
+            musicPlayer.creepyMusic.play();
+            musicPlayer.creepyMusic.loop = true;
+            fullScreenButton.classList.remove("hidden-button");
+            fullScreenButton.classList.add("fullscreen-button");
         }
     }
 }
