@@ -85,3 +85,28 @@ canvas {
     color: #FFFF00;
     font-size: 40px;
 }
+
+.chatbox {
+    position: absolute;
+    top: -500px;
+    left: 50%;
+    transform: translateX(-50%);
+    height: 300px;
+    width: 1000px;
+    background: rgba(187, 92, 92, 0.6);
+    /*-webkit-filter: blur(10px);
+    -moz-filter: blur(10px);
+    -o-filter: blur(10px);
+    -ms-filter: blur(10px);
+    border: 2px solid green;*/
+    transition: top 0.5s ease-in-out;
+}
+
+textarea {
+    width: 100%;
+    height: 100%;
+    font-size: 35px;
+    padding: 50px;
+    font-family: gothic;
+}
+
