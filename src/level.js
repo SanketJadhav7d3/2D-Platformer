@@ -50,12 +50,12 @@ class Level {
 
         this.player = new PlayerEntity({
             position: {x : 100, y : 100}, 
-            imageSrc: "./assets/PlayerSprite/idle_right.png",
-            frameRate: 8,
-            scale: 1,
+            imageSrc: "./assets/Warrior/idle_right.png",
+            frameRate: 10,
+            scale: 2,
             collisionBlocks: this.floorCollisionBlocks,
             frameBuffer: 6, 
-            animation: playerAnimation, 
+            animation: fantasyAnimation, 
             context: this.context
         });
 

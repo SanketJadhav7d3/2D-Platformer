@@ -87,7 +87,7 @@ class Entity extends Sprite {
         this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
         this.hitbox = {
             position:  {
-                x: this.position.x + 60,
+                x: this.position.x + 70,
                 y: this.position.y + 55 
             }, 
             height: 48, 
@@ -149,7 +149,6 @@ class PlayerEntity extends Entity {
                 pressed : false,
             },
         };
-        this.attack_no = 1;
 
         // animations
         for (let key in this.animation) {
@@ -175,7 +174,7 @@ class PlayerEntity extends Entity {
                 case 'w':
                     // check if player on ground
                     if (!this.jump) {
-                        this.velocity.y -= 11;
+                        this.velocity.y -= 10;
                         this.jump = true;
                     }
                     break;
@@ -206,17 +205,6 @@ class PlayerEntity extends Entity {
             switch (event.key) {
                 case 'j':
                     this.is_attacking = true;
-                    this.currentAnimationKey = "attack_3_" + this.last_direction;
-                    if (!this.jump) this.velocity.x = 0;
-                    break;
-                case 'k':
-                    this.is_attacking = true;
-                    this.currentAnimationKey = "attack_2_" + this.last_direction;
-                    if (!this.jump) this.velocity.x = 0;
-                    break;
-                case 'l':
-                    this.is_attacking = true;
-                    this.currentAnimationKey = "attack_1_" + this.last_direction;
                     if (!this.jump) this.velocity.x = 0;
                     break;
             }
@@ -238,20 +226,16 @@ class PlayerEntity extends Entity {
         // draw camerabox
         super.update({ width, height });
         this.updateCameraBox();
-        
-        // quick fix
-        // don't let the player get out of the window
-        if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
-        || (this.keys.a.pressed && this.hitbox.position.x <= 0))
-            this.velocity.x = 0;
 
         if (!this.jump)
             this.velocity.x = 0;
         if (this.last_direction == "right" && this.is_attacking && this.currentFrame != this.frameRate - 1) {
+            this.currentAnimationKey = "attack_3_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
             return;
 
         } else if (this.last_direction == "left" && this.is_attacking && this.currentFrame != 0) {
+            this.currentAnimationKey = "attack_3_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
             return;
         } else {
@@ -276,18 +260,18 @@ class PlayerEntity extends Entity {
         if (this.velocity.x < 0)
             this.last_direction = "left";
 
-        if (this.velocity.x == 0 && (this.velocity.y == 0.5)) 
-            this.switchSprite("idle_" + this.last_direction);
-
         if (this.jump) {
             if (this.velocity.y < 0)
                 this.switchSprite("jump_" + this.last_direction);
             else
                 this.switchSprite("fall_" + this.last_direction);
+            return;
         }
 
-        // quick fix
-        // don't let the player get out of the window
+        if (this.velocity.x == 0 && (this.velocity.y == 0.5)) 
+            this.switchSprite("idle_" + this.last_direction);
+        
+        // don't let the player get out
         if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
         || (this.keys.a.pressed && this.hitbox.position.x <= 0))
             this.velocity.x = 0;

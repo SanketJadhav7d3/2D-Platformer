@@ -63,6 +63,7 @@ class Sprite {
         if (this.elapsedFrames % this.frameBuffer === 0) {
             this.currentFrame = (this.currentFrame + 1) % (this.frameRate);
         }
+        return this.currentFrame == this.frameRate - 1;
     }
 
     updateFramesLeft() {
@@ -71,5 +72,6 @@ class Sprite {
             if (this.currentFrame <= 0) this.currentFrame = this.frameRate;
             this.currentFrame = this.currentFrame - 1;
         }
+        return this.currentFrame == 0;
     }
 }

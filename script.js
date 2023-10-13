@@ -36,7 +36,6 @@ function removeOpening() {
     openingWindow.classList.remove("fade-in");
 
     openingWindow.classList.add("fade-out");
-
 }
 
 function runVillage() {
@@ -62,8 +61,8 @@ window.onload = () => {
     } else if (canvasContainer.mozRequestFullScreen) {
         canvasContainer.mozRequestFullScreen();   /* morzilla */
     }
-    // musicPlayer.openingMusic.play();
-    // displayOpening();
+    musicPlayer.openingMusic.play();
+    displayOpening();
 }
 
 

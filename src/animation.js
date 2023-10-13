@@ -1,4 +1,71 @@
 
+const fantasyAnimation = {
+    idle_left: {
+        imageSrc: "./assets/Warrior/idle_left.png",
+        frameRate: 10,
+    }, 
+    idle_right: {
+        imageSrc: "./assets/Warrior/idle_right.png",
+        frameRate: 10,
+    },
+    run_left: {
+        imageSrc: "./assets/Warrior/run_left.png",
+        frameRate: 8,
+    },
+    run_right: {
+        imageSrc: "./assets/Warrior/run_right.png",
+        frameRate: 8,
+    },
+    jump_right: {
+        imageSrc: "./assets/Warrior/jump_right.png",
+        frameRate: 3,
+    },
+    jump_left: {
+        imageSrc: "./assets/Warrior/jump_left.png",
+        frameRate: 3,
+    },
+    fall_right: {
+        imageSrc: "./assets/Warrior/fall_right.png", 
+        frameRate: 3,
+    }, 
+    fall_left: {
+        imageSrc: "./assets/Warrior/fall_left.png", 
+        frameRate: 3,
+    },
+    attack_1_left: {
+        imageSrc: "./assets/Warrior/attack_1_left.png",
+        frameRate: 7,
+    },
+    attack_1_right: {
+        imageSrc: "./assets/Warrior/attack_1_right.png",
+        frameRate: 7,
+    },
+    attack_2_left: {
+        imageSrc: "./assets/Warrior/attack_2_left.png",
+        frameRate: 7,
+    },
+    attack_2_right: {
+        imageSrc: "./assets/Warrior/attack_2_right.png",
+        frameRate: 7,
+    },
+    attack_3_left: {
+        imageSrc: "./assets/Warrior/attack_3_left.png",
+        frameRate: 8,
+    },
+    attack_3_right: {
+        imageSrc: "./assets/Warrior/attack_3_right.png",
+        frameRate: 8,
+    },
+    hurt_left: {
+        imageSrc: "./assets/Warrior/hurt_left.png",
+        frameRate: 3,
+    }, 
+    hurt_right: {
+        imageSrc: "./assets/Warrior/hurt_right.png",
+        frameRate: 3,
+    }, 
+};
+
 const playerAnimation = {
     idle_left: {
         imageSrc: "./assets/PlayerSprite/idle_left.png",
