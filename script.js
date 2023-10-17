@@ -61,10 +61,9 @@ window.onload = () => {
     } else if (canvasContainer.mozRequestFullScreen) {
         canvasContainer.mozRequestFullScreen();   /* morzilla */
     }
-    musicPlayer.openingMusic.play();
+    // musicPlayer.openingMusic.play();
     displayOpening();
 }
-
 
 // menu keys
 window.onkeydown = (event) => {
@@ -72,8 +71,8 @@ window.onkeydown = (event) => {
         case " ":
             if (!village.hasGameStarted) {
                 village.hasGameStarted = true;
-                musicPlayer.openingMusic.pause();
-                musicPlayer.transitionMusic.play();
+                // musicPlayer.openingMusic.pause();
+                // musicPlayer.transitionMusic.play();
                 removeOpening();
                 // musicPlayer.creepyMusic.play();
                 musicPlayer.creepyMusic.loop = true;
@@ -90,4 +89,4 @@ window.onkeydown = (event) => {
     }
 }
 
-runVillage()
+runVillage();

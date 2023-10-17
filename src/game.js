@@ -17,20 +17,20 @@ class Game {
         this.textArea.value = "";
         if (!this.isChatboxShown) {
             this.isChatboxShown = !this.isChatboxShown;
-            this.chatbox.style.top = "0px";
+            this.chatbox.style.left = "0px";
             this.textArea.focus();
         } else {
             this.isChatboxShown = !this.isChatboxShown;
-            this.chatbox.style.top = "-500px";
+            this.chatbox.style.left = "-500px";
             this.textArea.blur();
         }
     }
 
     showChatBox() {
-            this.chatbox.style.top = "0px";
+            this.chatbox.style.left = "0px";
     }
 
     hideChatBox() {
-            this.chatbox.style.top = "-500px";
+            this.chatbox.style.left = "-500px";
     }
 }

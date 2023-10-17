@@ -10,8 +10,6 @@ body {
     src: url('./assets/font/GothicPixels.ttf')
 }
 
-canvas {
-}
 
 .canvas-container {
     background-color: black;
@@ -88,25 +86,85 @@ canvas {
 
 .chatbox {
     position: absolute;
-    top: -500px;
-    left: 50%;
-    transform: translateX(-50%);
-    height: 300px;
-    width: 1000px;
-    background: rgba(187, 92, 92, 0.6);
+    top: 0px;
+    left: -500px;
+    width: 500px;
+    height: 900px;
+    /* background: rgba(187, 92, 92, 0.6); */
     /*-webkit-filter: blur(10px);
     -moz-filter: blur(10px);
     -o-filter: blur(10px);
     -ms-filter: blur(10px);
     border: 2px solid green;*/
-    transition: top 0.5s ease-in-out;
+    transition: left 0.5s ease-in-out;
+    display: flex;
+    flex-direction: column;
+}
+
+.playerResponse {
+    background: black;
+    flex-grow: 1;
+    width: 100%;
 }
 
 textarea {
-    width: 100%;
-    height: 100%;
     font-size: 35px;
     padding: 50px;
     font-family: gothic;
+    flex-grow: 1;
+    color: #f0e6d2; /* Light parchment color */
+    background-color: #543f2f; /* Dusky brown */
+    border: none;
+    border-bottom-right-radius: 10px;
+    border-bottom-left-radius: 10px;
+}
+
+textarea:focus {
+  outline-color: transparent;
+  outline-style: none;
+}
+
+.game-button {
+    font-family: 'Press Start 2P', cursive;
+    background-color: #4CAF50; /* Green */
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: background-color 0.3s;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+}
+
+.game-button:hover {
+    background-color: #45a049; /* Darker Green */
+}
+
+.medieval-button {
+    font-family: gothic;
+    background-color: #543f2f; /* Dusky brown */
+    border: none;
+    color: #f0e6d2; /* Light parchment color */
+    padding: 15px 30px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 20px;
+    margin: 10px 2px;
+    cursor: pointer;
+    border-radius: 10px;
+    background-image: url('medieval-background.jpg'); /* Add your background image */
+    background-size: cover;
+    box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.3);
+}
+
+.medieval-button:hover {
+  background-color: #6e563e; /* Slightly darker brown on hover */
+  color: #ecdcb7; /* Light parchment color on hover */
 }
 
