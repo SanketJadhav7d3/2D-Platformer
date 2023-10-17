@@ -36,7 +36,6 @@ function removeOpening() {
     openingWindow.classList.remove("fade-in");
 
     openingWindow.classList.add("fade-out");
-
 }
 
 function runVillage() {
@@ -62,23 +61,32 @@ window.onload = () => {
     } else if (canvasContainer.mozRequestFullScreen) {
         canvasContainer.mozRequestFullScreen();   /* morzilla */
     }
-    musicPlayer.openingMusic.play();
+    // musicPlayer.openingMusic.play();
     displayOpening();
 }
 
+// menu keys
 window.onkeydown = (event) => {
-    if (event.key == " ") {
-        if (!village.hasGameStarted) {
-            village.hasGameStarted = true;
-            musicPlayer.openingMusic.pause();
-            musicPlayer.transitionMusic.play();
-            removeOpening();
-            musicPlayer.creepyMusic.play();
-            musicPlayer.creepyMusic.loop = true;
-            fullScreenButton.classList.remove("hidden-button");
-            fullScreenButton.classList.add("fullscreen-button");
-        }
+    switch (event.key) {
+        case " ":
+            if (!village.hasGameStarted) {
+                village.hasGameStarted = true;
+                // musicPlayer.openingMusic.pause();
+                // musicPlayer.transitionMusic.play();
+                removeOpening();
+                // musicPlayer.creepyMusic.play();
+                musicPlayer.creepyMusic.loop = true;
+                fullScreenButton.classList.remove("hidden-button");
+                fullScreenButton.classList.add("fullscreen-button");
+            }
+            break;
+
+        case "o":
+            if (event.ctrlKey) 
+                game.toggleChatBox();
+            
+            break;
     }
 }
 
-runVillage()
+runVillage();

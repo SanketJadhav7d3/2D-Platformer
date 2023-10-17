@@ -42,6 +42,16 @@ class Entity extends Sprite {
     updateHitBox() {
     }
 
+    collisionWithOtherEntity(other) {
+        if (collision({
+            object1: this.hitbox, 
+            object2: other.hitbox
+        }))
+            return true;
+
+        return false;
+    }
+
     verticalCollision() {
         for (let i = 0; i < this.collisionBlocks.length; i++) {
             const collisionBlock = this.collisionBlocks[i]
@@ -83,10 +93,12 @@ class Entity extends Sprite {
     }
 
     updateHitBox() {
+        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
+        this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
         this.hitbox = {
             position:  {
-                x: this.position.x + 110,
-                y: this.position.y + (250 / 2) - 7
+                x: this.position.x + 60,
+                y: this.position.y + 55 
             }, 
             height: 48, 
             width: 40
@@ -94,7 +106,7 @@ class Entity extends Sprite {
     }
 
     update({ width, height }) {
-        if (this.currentAnimationKey == "attack_left") 
+        if (this.last_direction == "left") 
             this.updateFramesLeft();
         else
             this.updateFramesRight();
@@ -106,17 +118,25 @@ class Entity extends Sprite {
         this.applyGravity();
     }
 
+    // static method to create an entity instance 
+    static createEntity(context, collisionBlocks, entityData) {
+
+        entityData["context"] = context;
+        entityData["collisionBlocks"] = collisionBlocks;
+
+        return new Entity(entityData);
+    }
 
     switchSprite(key) {
         if (this.image == this.animation[key].image || !this.loaded) return;
-        this.currentFrame = 0; // makes sure that next sprite animation 
-                                // starts from the start of the spritesheet
+
         this.image = this.animation[key].image;
         this.frameRate = this.animation[key].frameRate;
+
+        if (this.last_direction == "right") this.currentFrame = 0; 
+        else this.currentFrame = this.frameRate - 1;
     }
-
 }
-
 
 class PlayerEntity extends Entity {
     constructor({
@@ -133,11 +153,13 @@ class PlayerEntity extends Entity {
             position,
             imageSrc,
             frameRate,
+            scale,
             collisionBlocks,
             frameBuffer, 
             animation, 
             context
         });
+
         this.keys = {
             d : {
                 pressed : false,
@@ -147,55 +169,19 @@ class PlayerEntity extends Entity {
             },
         };
 
+        this.attack_no = 1;
+
         // animations
         for (let key in this.animation) {
             const image = new Image();
             image.src = this.animation[key].imageSrc;
             this.animation[key].image = image;
+
         }
 
         this.height /= 3.47;
         this.width /= 3;
         this.currentAnimationKey = "idle_" + this.last_direction;
-
-        window.addEventListener("keydown", (event) => {
-            switch (event.key) {
-                case 'a':
-                    if (!this.is_attacking)
-                        this.keys.a.pressed = true;
-                    break;
-                case 'd':
-                    if (!this.is_attacking)
-                        this.keys.d.pressed = true;
-                    break;
-                case 'w':
-                    // check if player on ground
-                    if (!this.jump) {
-                        this.velocity.y -= 10;
-                        this.jump = true;
-                    }
-                    break;
-                case 'e':
-                    if (!this.keys.a.pressed && !this.keys.d.pressed && !this.jump)
-                        this.is_attacking = true;
-                    break;
-            }
-        });
-
-        window.addEventListener("keyup", (event) => {
-            switch (event.key) {
-                case 'a':
-                    this.keys.a.pressed = false;
-                    break;
-                case 'd':
-                    this.keys.d.pressed = false;
-                    break;
-                case 'e':
-                    this.is_attacking = false;
-                    break;
-            }
-        });
-
         this.cameraBox = {
             position: {
                 x: this.position.x, 
@@ -203,13 +189,85 @@ class PlayerEntity extends Entity {
             }, 
             width: 200, 
             height: this.image.height
+        };
+
+        this.enableKeys();
+    }
+
+    keyDownHandler(e) {
+        switch (e.key) {
+            case 'a':
+                if (!this.is_attacking)
+                    this.keys.a.pressed = true;
+                break;
+            case 'd':
+                if (!this.is_attacking)
+                    this.keys.d.pressed = true;
+                break;
+            case 'w':
+                // check if player on ground
+                if (!this.jump) {
+                    this.velocity.y -= 11;
+                    this.jump = true;
+                }
+                break;
         }
     }
 
+    keyUpHandler(e) {
+        switch (e.key) {
+            case 'a':
+                this.keys.a.pressed = false;
+                break;
+            case 'd':
+                this.keys.d.pressed = false;
+                break;
+        }
+    }
+
+    keyPressHandler(e) {
+        switch (e.key) {
+            case 'j':
+                this.is_attacking = true;
+                this.currentAnimationKey = "attack_3_" + this.last_direction;
+                if (!this.jump) this.velocity.x = 0;
+                break;
+            case 'k':
+                this.is_attacking = true;
+                this.currentAnimationKey = "attack_2_" + this.last_direction;
+                if (!this.jump) this.velocity.x = 0;
+                break;
+            case 'l':
+                this.is_attacking = true;
+                this.currentAnimationKey = "attack_1_" + this.last_direction;
+                if (!this.jump) this.velocity.x = 0;
+                break;
+        }
+    }
+
+    enableKeys() {
+        window.addEventListener("keydown", (event) => this.keyDownHandler(event));
+
+        window.addEventListener("keyup", (event) => this.keyUpHandler(event));
+
+        window.addEventListener("keypress", (event) => this.keyPressHandler(event));
+    }
+
+    disableKeys() {
+        window.addEventListener("keydown", (event) => {});
+
+        window.addEventListener("keyup", (event) => {});
+
+        window.addEventListener("keypress", (event) => {});
+    }
+
     updateCameraBox() {
+        this.context.fillStyle = "rgba(255, 255, 0, 0.5)";
+        this.context.fillRect(this.cameraBox.position.x, this.cameraBox.position.y, this.cameraBox.width, this.cameraBox.height);
+
         this.cameraBox = {
             position: {
-                x: this.position.x - 70, 
+                x: this.position.x - 120, 
                 y: this.position.y
             }, 
             width: 400, 
@@ -221,42 +279,77 @@ class PlayerEntity extends Entity {
         // draw camerabox
         super.update({ width, height });
         this.updateCameraBox();
+        
+        // quick fix
+        // don't let the player get out of the window
+        if ((this.hitbox.position.x + this.hitbox.width >= width - 20)
+        || (this.hitbox.position.x <= 0))
+            this.velocity.x = 0;
+
+        if (!this.jump)
+            this.velocity.x = 0;
+        if (this.last_direction == "right" && this.is_attacking && this.currentFrame != this.frameRate - 1) {
+            this.switchSprite(this.currentAnimationKey);
+            
+            // quick fix
+            // don't let the player get out of the window
+            // if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
+            // || (this.keys.a.pressed && this.hitbox.position.x <= 0))
+                // this.velocity.x = 0;
+
+            // this.updateCameraBox();
+
+            return;
+
+        } else if (this.last_direction == "left" && this.is_attacking && this.currentFrame != 0) {
+            this.switchSprite(this.currentAnimationKey);
+            
+            // quick fix
+            // don't let the player get out of the window
+            // if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
+            // || (this.keys.a.pressed && this.hitbox.position.x <= 0))
+                // this.velocity.x = 0;
+
+            // this.updateCameraBox();
+
+            return;
+        } else {
+            this.is_attacking = false;
+        }
 
         this.velocity.x = 0;
-        if (this.keys.d.pressed) {
+        if (this.keys.d.pressed && !this.is_attacking) {
             this.velocity.x = 6;
             this.currentAnimationKey = "run_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
         }
-        if (this.keys.a.pressed) {
+        if (this.keys.a.pressed && !this.is_attacking) {
             this.velocity.x = -6;
             this.currentAnimationKey = "run_" + this.last_direction;
             this.switchSprite(this.currentAnimationKey);
         }
 
-        if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
-        || (this.keys.a.pressed && this.hitbox.position.x <= 0))
-            this.velocity.x = 0;
-        
         // change direction
         if (this.velocity.x > 0)
             this.last_direction = "right";
         if (this.velocity.x < 0)
             this.last_direction = "left";
 
-        if (this.is_attacking) {
-            this.currentAnimationKey = "attack_" + this.last_direction;
-            this.switchSprite(this.currentAnimationKey);
-            return;
-        }
-
-        if (this.jump) {
-            this.switchSprite("jump_" + this.last_direction);
-            return;
-        }
-
         if (this.velocity.x == 0 && (this.velocity.y == 0.5)) 
             this.switchSprite("idle_" + this.last_direction);
+
+        if (this.jump) {
+            if (this.velocity.y < 0)
+                this.switchSprite("jump_" + this.last_direction);
+            else
+                this.switchSprite("fall_" + this.last_direction);
+        }
+
+        // quick fix
+        // don't let the player get out of the window
+        if ((this.keys.d.pressed && this.hitbox.position.x + this.hitbox.width >= width - 20)
+        || (this.keys.a.pressed && this.hitbox.position.x <= 0))
+            this.velocity.x = 0;
     }
 } 
 

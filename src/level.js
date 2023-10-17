@@ -20,6 +20,7 @@ class Level {
         this.platformCollisionData = platformCollisionData;
         this.hasGameStarted = false;
         this.context = context;
+        this.entites = [];
         this.camera = {
             position: {
                 x: 0, 
@@ -50,12 +51,12 @@ class Level {
 
         this.player = new PlayerEntity({
             position: {x : 100, y : 100}, 
-            imageSrc: "./assets/PlayerSprite/idle_right.png",
-            frameRate: 8,
+            imageSrc: "./assets/Warrior/idle_right.png",
+            frameRate: 10,
             scale: 1,
             collisionBlocks: this.floorCollisionBlocks,
             frameBuffer: 6, 
-            animation: playerAnimation, 
+            animation: fantasyAnimation, 
             context: this.context
         });
 
@@ -104,8 +105,13 @@ class Level {
             delayAfter: 200, 
             context: this.context
         });
+    }
 
-        this.entites = [this.player];
+    addEntity(entity) {
+        this.entites.push(entity);
+    }
+
+    initializeEntites() {
     }
 
     shouldPanToTheLeft() {
@@ -113,11 +119,19 @@ class Level {
 
         const playerCameraBox = this.player.cameraBox;
 
-        if (playerCameraBox.position.x + playerCameraBox.width >= this.image.width - 20)
-            return;
+        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
+        this.context.fillRect(playerCameraBox.x, playerCameraBox.y, playerCameraBox.width, playerCameraBox.height);
 
-        if (this.camera.position.x + playerCameraBox.position.x + playerCameraBox.width >= window.innerWidth / 3)
+
+        if (playerCameraBox.position.x + playerCameraBox.width >= this.image.width) return;
+
+        // quick fix
+        if (playerCameraBox.position.x + playerCameraBox.width >= window.innerWidth / 3 + Math.abs(this.camera.position.x)) {
+            var offset = (playerCameraBox.position.x + playerCameraBox.width) - (Math.abs(this.camera.position.x) + window.innerWidth / 3);  
+            if (offset > 4)
+                this.camera.position.x -= offset;
             this.camera.position.x -= this.player.velocity.x;
+        }
     }
 
     shouldPanToTheRigth() {
@@ -126,6 +140,12 @@ class Level {
         const playerCameraBox = this.player.cameraBox;
 
         if (playerCameraBox.position.x <= 0) return;
+
+        const offset = playerCameraBox.position.x - Math.abs(this.camera.position.x);
+
+        // quick fix
+        if (offset < 0)
+            this.camera.position.x -= offset;
 
         if (playerCameraBox.position.x <= Math.abs(this.camera.position.x))
             this.camera.position.x -= this.player.velocity.x;
@@ -147,8 +167,6 @@ class Level {
         this.context.translate(this.camera.position.x, this.camera.position.y);
         this.context.drawImage(this.image, 0, 0);
 
-        this.shouldPanToTheRigth();
-        this.shouldPanToTheLeft();
 
         if (this.hasGameStarted) {
             this.woman.update({ width: this.image.width, height: this.image.height});
@@ -157,6 +175,12 @@ class Level {
             this.hatMan.update({ width: this.image.width, height: this.image.height});
             this.player.update({ width: this.image.width, height: this.image.height});
         }
+
+        this.shouldPanToTheRigth();
+        this.shouldPanToTheLeft();
+
+        // this.context.fillStyle = "rgba(0, 0, 255, 0.5)";
+        // this.context.fillRect(Math.abs(this.camera.position.x), this.camera.position.y, window.innerWidth / 3, window.innerHeight);
 
 //        this.floorCollisionBlocks.forEach((tile) => {
 //            if (this.collision({
@@ -173,7 +197,6 @@ class Level {
         // this.floorCollisionBlocks.forEach((tile) => {
             // tile.draw();
         // });
-
         this.context.restore();
     }
 }
