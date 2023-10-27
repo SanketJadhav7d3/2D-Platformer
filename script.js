@@ -6,15 +6,14 @@ const musicPlayer = new BackgroundMusic();
 const canvasContainer = document.getElementsByClassName("canvas-container")[0];
 
 fullScreenButton.addEventListener('click', () => {
-    if (canvasContainer.requestFullscreen) {
+    if (canvasContainer.requestFullscreen) 
         canvasContainer.requestFullscreen();
-    } else if (canvasContainer.webkitRequestFullscreen) { /* Safari */
-        canvasContainer.webkitRequestFullscreen();
-    } else if (canvasContainer.msRequestFullscreen) { /* IE11 */
+     else if (canvasContainer.webkitRequestFullscreen)  /* Safari */
+        canvasContainer.webkitRequestFullscreen()
+     else if (canvasContainer.msRequestFullscreen)  /* IE11 */
         canvasContainer.msRequestFullscreen();
-    } else if (canvasContainer.mozRequestFullScreen) {
+     else if (canvasContainer.mozRequestFullScreen) 
         canvasContainer.mozRequestFullScreen();   /* morzilla */
-    }
 });
 
 // canvas.width = window.innerWidth;
@@ -38,20 +37,7 @@ function removeOpening() {
     openingWindow.classList.add("fade-out");
 }
 
-function runVillage() {
-    window.requestAnimationFrame(runVillage);
-    // scaling and restoring 
-    // ctx.save()
-    // floor collision and tile collision goes inside
-    // ctx.scale(3, 3.47);
-    // background.draw();
-    // ctx.restore();
-
-    village.drawBackground();
-}
-
 window.onload = () => {
-    console.log("hwat");
     if (canvasContainer.requestFullscreen) {
         canvasContainer.requestFullscreen();
     } else if (canvasContainer.webkitRequestFullscreen) { /* Safari */
@@ -65,17 +51,20 @@ window.onload = () => {
     displayOpening();
 }
 
+game.initalizeLevel(village);
+// game.initalizeLevel(cemetry);
+
 // menu keys
 window.onkeydown = (event) => {
     switch (event.key) {
         case " ":
-            if (!village.hasGameStarted) {
-                village.hasGameStarted = true;
+            if (!game.currentLevel.hasGameStarted) {
+                game.currentLevel.hasGameStarted = true;
                 // musicPlayer.openingMusic.pause();
                 // musicPlayer.transitionMusic.play();
                 removeOpening();
                 // musicPlayer.creepyMusic.play();
-                musicPlayer.creepyMusic.loop = true;
+                // musicPlayer.creepyMusic.loop = true;
                 fullScreenButton.classList.remove("hidden-button");
                 fullScreenButton.classList.add("fullscreen-button");
             }
@@ -89,4 +78,4 @@ window.onkeydown = (event) => {
     }
 }
 
-runVillage();
+game.runGame();

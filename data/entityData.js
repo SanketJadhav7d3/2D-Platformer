@@ -5,7 +5,7 @@ const mainPlayer = {
     frameRate: 10,
     scale: 2,
     collisionBlocks: this.floorCollisionBlocks,
-    frameBuffer: 6, 
+    frameBuffer: 5, 
     animation: fantasyAnimation, 
 };
 
@@ -20,7 +20,7 @@ const woman = {
 }
 
 const beardedMan = {
-    position: {x : 900, y : 100}, 
+    position: {x : 1000, y : 100}, 
     imageSrc: "./assets/villagers/bearded/idle_right.png",
     frameRate: 5,
     scale: 1,
@@ -50,3 +50,13 @@ const hatMan = {
     frameBuffer: 13, 
     animation: hatManAnimation, 
 }; 
+
+const bossData = {
+    position: {x : 800, y : 100}, 
+    imageSrc: "./assets/Enemies/Boss/idle_right.png",
+    frameRate: 8,
+    scale: 1,
+    collisionBlocks: this.floorCollisionBlocks,
+    frameBuffer: 10, 
+    animation: bossAnimation, 
+}

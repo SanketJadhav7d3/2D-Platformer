@@ -158,7 +158,6 @@ textarea:focus {
     margin: 10px 2px;
     cursor: pointer;
     border-radius: 10px;
-    background-image: url('medieval-background.jpg'); /* Add your background image */
     background-size: cover;
     box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.3);
 }

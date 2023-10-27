@@ -13,14 +13,40 @@ class Tile {
 }
 
 class Level {
-    constructor({bg_img_path, floorCollisionData, platformCollisionData, context}) {
+    constructor({
+        bg_img_path, 
+        mg_img_path=null, 
+        fg_img_path=null,
+        floorCollisionData,
+        platformCollisionData,
+        context,
+        playerData, 
+        AIEntitiesData,
+        EnemyEntitiesData
+    }) 
+    {
         this.image = new Image();
         this.image.src = bg_img_path;
+
+        if (mg_img_path) {
+            this.mg_image = new Image();
+            this.mg_image.src = mg_img_path;
+            this.mg_image.width = this.image.width / 3;
+        }
+
+        if (fg_img_path) {
+            this.fg_image = new Image();
+            this.fg_image.src = fg_img_path;
+        }
+
         this.floorCollisionData = floorCollisionData;
         this.platformCollisionData = platformCollisionData;
         this.hasGameStarted = false;
         this.context = context;
-        this.entites = [];
+        this.entities = [];
+        this.playerData = playerData;
+        this.AIEntitiesData = AIEntitiesData;
+        this.EnemyEntitiesData = EnemyEntitiesData;
         this.camera = {
             position: {
                 x: 0, 
@@ -37,7 +63,7 @@ class Level {
         this.floorCollisionBlocks = [];
         for (var i = 0; i < this.floorCollisionData.length; i++) {
             for (var j = 0; j < this.floorCollisionData[0].length; ++j) {
-                if (this.floorCollisionData[i][j] == 66)
+                if (this.floorCollisionData[i][j] != 0)
                     this.floorCollisionBlocks.push(
                         new Tile({
                             position: {
@@ -60,51 +86,15 @@ class Level {
             context: this.context
         });
 
-        this.woman = new AIEntity({
-            position: {x : 200, y : 100}, 
-            imageSrc: "./assets/villagers/woman/idle_right.png",
-            frameRate: 7,
-            scale: 1,
-            collisionBlocks: this.floorCollisionBlocks,
-            frameBuffer: 6, 
-            animation: womanAnimation, 
-            context: this.context
+        this.AIEntitiesData.forEach((entityData) => {
+            this.entities.push(AIVillager.createEntity(context, this.floorCollisionBlocks, entityData));
         });
 
-        this.hatMan = new AIEntity({
-            position: {x : 800, y : 100}, 
-            imageSrc: "./assets/villagers/hatman/idle_right.png",
-            frameRate: 4,
-            scale: 1,
-            collisionBlocks: this.floorCollisionBlocks,
-            frameBuffer: 13, 
-            animation: hatManAnimation, 
-            context: this.context
+        this.EnemyEntitiesData.forEach((entityData) => {
+            this.entities.push(BossEnemy.createEntity(context, this.floorCollisionBlocks, entityData));
         });
 
-        this.oldman = new AIEntity({
-            position: {x : 500, y : 100}, 
-            imageSrc: "./assets/villagers/oldman/idle_right.png",
-            frameRate: 8,
-            scale: 1,
-            collisionBlocks: this.floorCollisionBlocks,
-            frameBuffer: 6, 
-            animation: oldManAnimation, 
-            delayAfter: 200, 
-            context: this.context
-        });
-
-        this.beardedMan = new AIEntity({
-            position: {x : 900, y : 100}, 
-            imageSrc: "./assets/villagers/bearded/idle_right.png",
-            frameRate: 5,
-            scale: 1,
-            collisionBlocks: this.floorCollisionBlocks,
-            frameBuffer: 6, 
-            animation: beardedManAnimation, 
-            delayAfter: 200, 
-            context: this.context
-        });
+        this.logicEntites = new EntityLogicGroup({entities: this.entities});
     }
 
     addEntity(entity) {
@@ -115,37 +105,27 @@ class Level {
     }
 
     shouldPanToTheLeft() {
-        if (!this.player.keys.d.pressed) return;
+        if (!this.player.keys.d.pressed && !this.player.jump || this.player.keys.a.pressed) return;
 
         const playerCameraBox = this.player.cameraBox;
 
         this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
         this.context.fillRect(playerCameraBox.x, playerCameraBox.y, playerCameraBox.width, playerCameraBox.height);
 
-
         if (playerCameraBox.position.x + playerCameraBox.width >= this.image.width) return;
 
         // quick fix
         if (playerCameraBox.position.x + playerCameraBox.width >= window.innerWidth / 3 + Math.abs(this.camera.position.x)) {
-            var offset = (playerCameraBox.position.x + playerCameraBox.width) - (Math.abs(this.camera.position.x) + window.innerWidth / 3);  
-            if (offset > 4)
-                this.camera.position.x -= offset;
             this.camera.position.x -= this.player.velocity.x;
         }
     }
 
     shouldPanToTheRigth() {
-        if (!this.player.keys.a.pressed) return;
+        if (!this.player.keys.a.pressed && !this.player.jump || this.player.keys.d.pressed) return;
 
         const playerCameraBox = this.player.cameraBox;
 
         if (playerCameraBox.position.x <= 0) return;
-
-        const offset = playerCameraBox.position.x - Math.abs(this.camera.position.x);
-
-        // quick fix
-        if (offset < 0)
-            this.camera.position.x -= offset;
 
         if (playerCameraBox.position.x <= Math.abs(this.camera.position.x))
             this.camera.position.x -= this.player.velocity.x;
@@ -165,14 +145,31 @@ class Level {
         this.context.scale(this.scalingFactor.x, this.scalingFactor.y);
         // draw floorCollision and platformCollision
         this.context.translate(this.camera.position.x, this.camera.position.y);
+        this.context.clearRect(0, 0, this.image.width, this.image.height);
+
+        if (this.mg_image)
+            this.context.drawImage(this.mg_image, Math.abs(this.camera.position.x) * 0.96, 0, 1920 / 2.8, this.image.height);
+
+        if (this.fg_image)
+            this.context.drawImage(this.fg_image, Math.abs(this.camera.position.x) * 0.89, 0, 1920, this.fg_image.height);
+
         this.context.drawImage(this.image, 0, 0);
 
-
         if (this.hasGameStarted) {
-            this.woman.update({ width: this.image.width, height: this.image.height});
-            this.oldman.update({ width: this.image.width, height: this.image.height});
-            this.beardedMan.update({ width: this.image.width, height: this.image.height});
-            this.hatMan.update({ width: this.image.width, height: this.image.height});
+
+            // update logic
+            // this.logicEntites.update();
+
+            this.entities.forEach((entity) => {
+                entity.update({ width: this.image.width, height: this.image.height});
+                // entity.updateTalkButton(this.camera.position.x);
+                //                
+                    //                // if (collision({object1: this.player.hitbox, object2: entity.hitbox})) 
+                    //                    // entity.addTalkButton();
+                //                // else
+                    //                    // entity.removeTalkButton();
+            });
+
             this.player.update({ width: this.image.width, height: this.image.height});
         }
 

@@ -119,7 +119,7 @@ const beardedManAnimation = {
         frameRate: 6
     },
     walk_right: {
-        imageSrc: "./assets/Villagers/bearded/walk_wright.png",
+        imageSrc: "./assets/Villagers/bearded/walk_right.png",
         frameRate: 6
     }
 }
@@ -138,7 +138,7 @@ const hatManAnimation = {
         frameRate: 6
     },
     walk_right: {
-        imageSrc: "./assets/Villagers/hatman/walk_wright.png",
+        imageSrc: "./assets/Villagers/hatman/walk_right.png",
         frameRate: 6
     }
 }
@@ -158,7 +158,7 @@ const oldManAnimation = {
         frameRate: 12
     },
     walk_right: {
-        imageSrc: "./assets/Villagers/oldman/walk_wright.png",
+        imageSrc: "./assets/Villagers/oldman/walk_right.png",
         frameRate: 12
     }
 }
@@ -177,8 +177,44 @@ const womanAnimation = {
         frameRate: 6
     },
     walk_right: {
-        imageSrc: "./assets/Villagers/woman/walk_wright.png",
+        imageSrc: "./assets/Villagers/woman/walk_right.png",
         frameRate: 6
     }
 }
+
+
+const bossAnimation = {
+    idle_left: {
+        imageSrc: "./assets/Enemies/Boss/idle_left.png",
+        frameRate: 8,
+    }, 
+    idle_right: {
+        imageSrc: "./assets/Enemies/Boss/idle_right.png",
+        frameRate: 8,
+    },
+    run_left: {
+        imageSrc: "./assets/Enemies/Boss/walk_left.png",
+        frameRate: 8,
+    },
+    run_right: {
+        imageSrc: "./assets/Enemies/Boss/walk_right.png",
+        frameRate: 8,
+    },
+    attack_right: {
+        imageSrc: "./assets/Enemies/Boss/attack_right.png",
+        frameRate: 10,
+    },
+    attack_left: {
+        imageSrc: "./assets/Enemies/Boss/attack_left.png",
+        frameRate: 10,
+    },
+    hurt_left: {
+        imageSrc: "./assets/Enemies/Boss/hurt_left.png",
+        frameRate: 3,
+    }, 
+    hurt_right: {
+        imageSrc: "./assets/Enemies/Boss/hurt_left.png",
+        frameRate: 3,
+    }, 
+};
 

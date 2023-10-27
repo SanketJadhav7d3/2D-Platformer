@@ -10,6 +10,18 @@ class Game {
         this.chatbox = document.getElementsByClassName("chatbox")[0];
         this.isChatboxShown = false;
         this.textArea = document.querySelector("textarea");
+        this.currentLevel = undefined;
+        this.reqID = null;
+    }
+
+    initalizeLevel(levelData) {
+        levelData["context"] = this.context;
+        this.currentLevel = new Level(levelData);
+    }
+
+    runGame() {
+        this.reqID = window.requestAnimationFrame(this.runGame.bind(this));
+        this.currentLevel.drawBackground();
     }
 
     toggleChatBox() {
