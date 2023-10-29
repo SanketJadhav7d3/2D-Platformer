@@ -162,12 +162,11 @@ class Level {
 
             this.entities.forEach((entity) => {
                 entity.update({ width: this.image.width, height: this.image.height});
-                // entity.updateTalkButton(this.camera.position.x);
-                //                
-                    //                // if (collision({object1: this.player.hitbox, object2: entity.hitbox})) 
-                    //                    // entity.addTalkButton();
-                //                // else
-                    //                    // entity.removeTalkButton();
+                entity.updateTalkButton(this.camera.position.x);
+                    if (collision({object1: this.player.hitbox, object2: entity.hitbox})) 
+                    entity.addTalkButton();
+                else
+                    entity.removeTalkButton();
             });
 
             this.player.update({ width: this.image.width, height: this.image.height});

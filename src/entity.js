@@ -219,10 +219,15 @@ class PlayerEntity extends Entity {
             height: this.image.height
         };
 
-        this.enableKeys();
+        this.keysDisabled = false; 
+        // add keyboard inputs
+        window.addEventListener("keydown", this.keyDownHandler.bind(this));
+        window.addEventListener("keyup", this.keyUpHandler.bind(this));
+        window.addEventListener("keypress", this.keyPressHandler.bind(this));
     }
 
     keyDownHandler(e) {
+        if (this.keysDisabled) return;
         switch (e.key) {
             case 'a':
                 if (!this.is_attacking)
@@ -243,6 +248,7 @@ class PlayerEntity extends Entity {
     }
 
     keyUpHandler(e) {
+        if (this.keysDisabled) return;
         switch (e.key) {
             case 'a':
                 this.keys.a.pressed = false;
@@ -254,6 +260,7 @@ class PlayerEntity extends Entity {
     }
 
     keyPressHandler(e) {
+        if (this.keysDisabled) return;
         switch (e.key) {
             case 'j':
                 this.is_attacking = true;
@@ -271,22 +278,6 @@ class PlayerEntity extends Entity {
                 if (!this.jump) this.velocity.x = 0;
                 break;
         }
-    }
-
-    enableKeys() {
-        window.addEventListener("keydown", (event) => this.keyDownHandler(event));
-
-        window.addEventListener("keyup", (event) => this.keyUpHandler(event));
-
-        window.addEventListener("keypress", (event) => this.keyPressHandler(event));
-    }
-
-    disableKeys() {
-        window.addEventListener("keydown", (event) => {});
-
-        window.addEventListener("keyup", (event) => {});
-
-        window.addEventListener("keypress", (event) => {});
     }
 
     updateCameraBox() {
@@ -528,10 +519,13 @@ class AIVillager extends AIEntity {
         this.talkButton.style.position = "absolute";
         this.talkButton.style.top = (this.position.y * 6) + "px";
         this.talkButton.style.left = (this.position.x * 3) + "px";
+        this.talkButton.style.zIndex = 4;
         this.talkButton.textContent = "Talk";
+
         this.talkButton.addEventListener("click", () => {
             game.toggleChatBox();
         })
+
         this.action = 1;
         this.buffer = 200;
         this.elapsed = 0;
