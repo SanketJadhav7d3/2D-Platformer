@@ -12,8 +12,13 @@ body {
 }
 
 
+#container {
+    background-color: black;
+}
+
 .canvas-container {
     background-color: black;
+    z-index: 1;
 }
 
 #mute-button {

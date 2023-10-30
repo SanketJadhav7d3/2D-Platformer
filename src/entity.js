@@ -519,7 +519,7 @@ class AIVillager extends AIEntity {
         this.talkButton.style.position = "absolute";
         this.talkButton.style.top = (this.position.y * 6) + "px";
         this.talkButton.style.left = (this.position.x * 3) + "px";
-        this.talkButton.style.zIndex = 4;
+        this.talkButton.style.zIndex = 2;
         this.talkButton.textContent = "Talk";
 
         this.talkButton.addEventListener("click", () => {
@@ -549,18 +549,21 @@ class AIVillager extends AIEntity {
     }
 
     removeTalkButton() {
-        if (document.body.contains(this.talkButton)) 
-            document.body.removeChild(this.talkButton)
+        var container = document.getElementById("container");
+        if (container.contains(this.talkButton)) 
+            container.removeChild(this.talkButton)
     }
 
     addTalkButton() {
-        if (!document.body.contains(this.talkButton))
-            document.body.appendChild(this.talkButton)
+        var container = document.getElementById("container");
+        if (!document.body.contains(this.talkButton)) 
+            container.appendChild(this.talkButton);
+            // document.body.appendChild(this.talkButton)
     }
 
     updateHitBox() {
-        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
-        this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+        // this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
+        // this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
         this.hitbox = {
             position:  {
                 x: this.position.x,
