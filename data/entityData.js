@@ -17,6 +17,10 @@ const woman = {
     collisionBlocks: this.floorCollisionBlocks,
     frameBuffer: 6, 
     animation: womanAnimation, 
+    hitBoxOffset: {
+        x: 0, 
+        y: 0
+    } 
 }
 
 const beardedMan = {
@@ -28,6 +32,10 @@ const beardedMan = {
     frameBuffer: 6, 
     animation: beardedManAnimation, 
     delayAfter: 200, 
+    hitBoxOffset: {
+        x: 0, 
+        y: 0
+    } 
 } 
 
 const oldman = {
@@ -39,6 +47,10 @@ const oldman = {
     frameBuffer: 6, 
     animation: oldManAnimation, 
     delayAfter: 200, 
+    hitBoxOffset: {
+        x: 0, 
+        y: 5
+    } 
 }
 
 const hatMan = {
@@ -47,8 +59,12 @@ const hatMan = {
     frameRate: 4,
     scale: 1,
     collisionBlocks: this.floorCollisionBlocks,
-    frameBuffer: 13, 
+    frameBuffer: 10, 
     animation: hatManAnimation, 
+    hitBoxOffset: {
+        x: 0, 
+        y: -5
+    } 
 }; 
 
 const bossData = {
@@ -59,4 +75,8 @@ const bossData = {
     collisionBlocks: this.floorCollisionBlocks,
     frameBuffer: 10, 
     animation: bossAnimation, 
+    hitBoxOffset: {
+        x: 0, 
+        y: 0
+    } 
 }

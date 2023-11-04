@@ -1,4 +1,16 @@
 
+// class API 
+
+// send api request with trigger
+// move 
+
+
+class NPCBehaviour {
+    constructor({entity}) {
+        this.entity = entity;
+    }
+
+}
 
 
 class EntityLogicGroup {

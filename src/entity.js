@@ -490,7 +490,11 @@ class AIVillager extends AIEntity {
         frameBuffer, 
         animation, 
         delayAfter = 1, 
-        context
+        context, 
+        hitBoxOffset = {
+            x: 0, 
+            y: 0
+        }
     }) {
         super({
             position,
@@ -512,6 +516,7 @@ class AIVillager extends AIEntity {
             height: 11, 
             width: 10
         };
+        this.hitBoxOffset = hitBoxOffset;
         this.frames = 0;
         this.delayAfter = delayAfter;
         this.talkButton = document.createElement('button');
@@ -562,12 +567,12 @@ class AIVillager extends AIEntity {
     }
 
     updateHitBox() {
-        // this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
-        // this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
+        this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
         this.hitbox = {
             position:  {
-                x: this.position.x,
-                y: this.position.y
+                x: this.position.x - this.hitBoxOffset.x,
+                y: this.position.y - this.hitBoxOffset.y
             }, 
             height: 50, 
             width: 40

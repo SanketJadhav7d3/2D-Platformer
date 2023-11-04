@@ -3,7 +3,7 @@ const village = {
     bg_img_path: "./assets/environment/village_landscape.png",
     floorCollisionData: floorCollision,
     platformCollisionData: platformCollision,
-    AIEntitiesData: [woman, beardedMan, oldman, hatMan],
+    AIEntitiesData: [oldman, woman, hatMan, beardedMan],
     EnemyEntitiesData: [],
     mg_img_path: "./assets/environment/village_sky.png",
     fg_img_path: "./assets/environment/village_middle_ground.png"
