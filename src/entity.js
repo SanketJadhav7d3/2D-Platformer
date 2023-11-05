@@ -10,7 +10,11 @@ class Entity extends Sprite {
         collisionBlocks,
         frameBuffer, 
         animation, 
-        context
+        context,  
+        hitBoxOffset = {
+            x: 0, 
+            y: 0
+        }
     }) {
         super({
             position,
@@ -32,6 +36,7 @@ class Entity extends Sprite {
             height: 11, 
             width: 10
         };
+        this.hitBoxOffset = hitBoxOffset;
         this.collisionBlocks = collisionBlocks;
         this.jump = false;
         this.last_direction = "left";
@@ -49,6 +54,16 @@ class Entity extends Sprite {
     }
 
     updateHitBox() {
+        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
+        this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+        this.hitbox = {
+            position:  {
+                x: this.position.x - this.hitBoxOffset.x,
+                y: this.position.y - this.hitBoxOffset.y 
+            }, 
+            height: 48, 
+            width: 40
+        };
     }
 
     collisionWithOtherEntity(other) {
@@ -99,19 +114,6 @@ class Entity extends Sprite {
     applyGravity() {
         this.velocity.y += gravity;
         this.position.y += this.velocity.y;
-    }
-
-    updateHitBox() {
-        // this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
-        // this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
-        this.hitbox = {
-            position:  {
-                x: this.position.x + 60,
-                y: this.position.y + 55 
-            }, 
-            height: 48, 
-            width: 40
-        };
     }
 
     switchSprite(key) {
@@ -176,7 +178,8 @@ class PlayerEntity extends Entity {
         collisionBlocks,
         frameBuffer, 
         animation, 
-        context
+        context, 
+        hitBoxOffset
     }) {
         super({
             position,
@@ -186,7 +189,9 @@ class PlayerEntity extends Entity {
             collisionBlocks,
             frameBuffer, 
             animation, 
-            context
+            context, 
+            hitBoxOffset
+
         });
 
         this.keys = {
@@ -395,7 +400,8 @@ class AIEntity extends Entity {
         frameBuffer, 
         animation, 
         delayAfter = 1, 
-        context
+        context, 
+        hitBoxOffset
     }) {
         super({
             position,
@@ -405,7 +411,8 @@ class AIEntity extends Entity {
             collisionBlocks,
             frameBuffer, 
             animation, 
-            context
+            context, 
+            hitBoxOffset
         });
         this.height /= 3.47;
         this.width /= 3;
@@ -422,7 +429,7 @@ class AIEntity extends Entity {
         this.talkButton = document.createElement('button');
     }
 
-    updateHitBox() {
+    // updateHitBox() {
     //    this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
     //    this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
     //    this.hitbox = {
@@ -433,7 +440,7 @@ class AIEntity extends Entity {
     //        height: 55, 
     //        width: 50
     //    };
-    }
+    // }
 
     updateFramesRight() {
         // super messy code alert
@@ -491,10 +498,7 @@ class AIVillager extends AIEntity {
         animation, 
         delayAfter = 1, 
         context, 
-        hitBoxOffset = {
-            x: 0, 
-            y: 0
-        }
+        hitBoxOffset 
     }) {
         super({
             position,
@@ -504,7 +508,8 @@ class AIVillager extends AIEntity {
             collisionBlocks,
             frameBuffer, 
             animation, 
-            context
+            context, 
+            hitBoxOffset
         });
         this.height /= 3.47;
         this.width /= 3;
@@ -516,7 +521,6 @@ class AIVillager extends AIEntity {
             height: 11, 
             width: 10
         };
-        this.hitBoxOffset = hitBoxOffset;
         this.frames = 0;
         this.delayAfter = delayAfter;
         this.talkButton = document.createElement('button');
@@ -566,23 +570,23 @@ class AIVillager extends AIEntity {
             // document.body.appendChild(this.talkButton)
     }
 
-    updateHitBox() {
-        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
-        this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
-        this.hitbox = {
-            position:  {
-                x: this.position.x - this.hitBoxOffset.x,
-                y: this.position.y - this.hitBoxOffset.y
-            }, 
-            height: 50, 
-            width: 40
-        };
-    }
+    // updateHitBox() {
+        // this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
+        // this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+        // this.hitbox = {
+            // position:  {
+                // x: this.position.x - this.hitBoxOffset.x,
+                // y: this.position.y - this.hitBoxOffset.y
+            // }, 
+            // height: 50, 
+            // width: 40
+        // };
+    // }
 
     updateTalkButton(cameraX) {
         this.talkButton.style.left = ((this.position.x + cameraX) * 3 ) + "px";
     }
-//
+
 //    updateFramesRight() {
 //        if (this.currentFrame != this.frameRate - 1)
 //            super.ipdateFramesRight();

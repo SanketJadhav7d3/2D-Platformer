@@ -7,6 +7,10 @@ const mainPlayer = {
     collisionBlocks: this.floorCollisionBlocks,
     frameBuffer: 5, 
     animation: fantasyAnimation, 
+    hitBoxOffset: {
+        x: 50, 
+        y: 60
+    } 
 };
 
 const woman = {

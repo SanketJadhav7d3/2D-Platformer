@@ -47,7 +47,7 @@ window.onload = () => {
     } else if (canvasContainer.mozRequestFullScreen) {
         canvasContainer.mozRequestFullScreen();   /* morzilla */
     }
-    musicPlayer.openingMusic.play();
+    // musicPlayer.openingMusic.play();
     displayOpening();
 }
 
@@ -60,11 +60,11 @@ window.onkeydown = (event) => {
         case " ":
             if (!game.currentLevel.hasGameStarted) {
                 game.currentLevel.hasGameStarted = true;
-                musicPlayer.openingMusic.pause();
-                musicPlayer.transitionMusic.play();
+                // musicPlayer.openingMusic.pause();
+                // musicPlayer.transitionMusic.play();
                 removeOpening();
-                musicPlayer.creepyMusic.play();
-                musicPlayer.creepyMusic.loop = true;
+                // musicPlayer.creepyMusic.play();
+                // musicPlayer.creepyMusic.loop = true;
                 fullScreenButton.classList.remove("hidden-button");
                 fullScreenButton.classList.add("fullscreen-button");
             }

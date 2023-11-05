@@ -5,8 +5,11 @@
 // move 
 
 
+// instead of passing entity object pass entitydata
+
 class NPCBehaviour {
-    constructor({entity}) {
+    constructor() {
+        // create
         this.entity = entity;
     }
 

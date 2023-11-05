@@ -83,7 +83,11 @@ class Level {
             collisionBlocks: this.floorCollisionBlocks,
             frameBuffer: 6, 
             animation: fantasyAnimation, 
-            context: this.context
+            context: this.context, 
+            hitBoxOffset: {
+                x: -60, 
+                y: -55
+            }
         });
 
         this.AIEntitiesData.forEach((entityData) => {
