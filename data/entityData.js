@@ -24,7 +24,9 @@ const woman = {
     hitBoxOffset: {
         x: 0, 
         y: 0
-    } 
+    }, 
+    name: "Elevyn", 
+    characterID: 'workspaces/default-fxnni5br2akopyesf06yuw/characters/evelyn'
 }
 
 const beardedMan = {
@@ -39,7 +41,9 @@ const beardedMan = {
     hitBoxOffset: {
         x: 0, 
         y: 0
-    } 
+    }, 
+    name: "Elias", 
+    characterID: 'workspaces/default-fxnni5br2akopyesf06yuw/characters/elias'
 } 
 
 const oldman = {
@@ -54,7 +58,9 @@ const oldman = {
     hitBoxOffset: {
         x: 0, 
         y: 5
-    } 
+    }, 
+    name: 'Gareth', 
+    characterID: 'workspaces/default-fxnni5br2akopyesf06yuw/characters/gareth'
 }
 
 const hatMan = {
@@ -68,7 +74,9 @@ const hatMan = {
     hitBoxOffset: {
         x: 0, 
         y: -5
-    } 
+    },
+    name: 'Lucas',
+    characterID: 'workspaces/default-fxnni5br2akopyesf06yuw/characters/lucas'
 }; 
 
 const bossData = {

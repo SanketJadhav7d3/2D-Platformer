@@ -487,7 +487,7 @@ class AIEntity extends Entity {
 }
 
 
-class AIVillager extends AIEntity {
+class NPCController extends AIEntity {
     constructor({
         position,
         imageSrc,
@@ -531,9 +531,12 @@ class AIVillager extends AIEntity {
         this.talkButton.style.zIndex = 2;
         this.talkButton.textContent = "Talk";
 
-        this.talkButton.addEventListener("click", () => {
-            game.toggleChatBox();
-        })
+        // should be taken to npc behaviour
+        // this.talkButton.addEventListener("click", () => {
+            // load chat history from database
+            // pass the json as string to 
+            // game.toggleChatBox();
+        // })
 
         this.action = 1;
         this.buffer = 200;
@@ -631,7 +634,7 @@ class AIVillager extends AIEntity {
         entityData["context"] = context;
         entityData["collisionBlocks"] = collisionBlocks;
 
-        return new AIVillager(entityData);
+        return new NPCController(entityData);
     }
 }
 
@@ -707,4 +710,3 @@ class BossEnemy extends Entity {
         return new BossEnemy(entityData);
     }
 }
-

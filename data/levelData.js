@@ -6,7 +6,7 @@ const village = {
     AIEntitiesData: [oldman, woman, hatMan, beardedMan],
     EnemyEntitiesData: [],
     mg_img_path: "./assets/environment/village_sky.png",
-    fg_img_path: "./assets/environment/village_middle_ground.png"
+    fg_img_path: "./assets/environment/village_middle_ground.png", 
 }
 
 const cemetry = {

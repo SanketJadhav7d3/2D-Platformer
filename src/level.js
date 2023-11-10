@@ -22,7 +22,8 @@ class Level {
         context,
         playerData, 
         AIEntitiesData,
-        EnemyEntitiesData
+        EnemyEntitiesData, 
+        apiData
     }) 
     {
         this.image = new Image();
@@ -90,8 +91,10 @@ class Level {
             }
         });
 
+        //this.womanNPC = new NPCBehaviour(context, this.floorCollisionBlocks, AIEntitiesData[0], eliasAPIdata);
+
         this.AIEntitiesData.forEach((entityData) => {
-            this.entities.push(AIVillager.createEntity(context, this.floorCollisionBlocks, entityData));
+            this.entities.push(new NPCBehaviour(context, this.floorCollisionBlocks, entityData));
         });
 
         this.EnemyEntitiesData.forEach((entityData) => {
@@ -165,12 +168,12 @@ class Level {
             // this.logicEntites.update();
 
             this.entities.forEach((entity) => {
-                entity.update({ width: this.image.width, height: this.image.height});
-                entity.updateTalkButton(this.camera.position.x);
-                    if (collision({object1: this.player.hitbox, object2: entity.hitbox})) 
-                    entity.addTalkButton();
+                entity.controller.update({ width: this.image.width, height: this.image.height});
+                entity.controller.updateTalkButton(this.camera.position.x);
+                    if (collision({object1: this.player.hitbox, object2: entity.controller.hitbox})) 
+                    entity.controller.addTalkButton();
                 else
-                    entity.removeTalkButton();
+                    entity.controller.removeTalkButton();
             });
 
             this.player.update({ width: this.image.width, height: this.image.height});

@@ -133,6 +133,7 @@ body {
     border-radius: 15px;
     overflow-y: auto;
     border: 2px solid #a77841;
+    font-size: 20px;
 }
 
 .playerResponse {
@@ -185,6 +186,11 @@ input {
     line-height: 1.6;
 }
 
+.npc-name {
+    margin: 10px;
+}
+
+
 .player-chat {
     font-family: gothic;
     margin: 20px;
@@ -196,6 +202,7 @@ input {
     word-wrap: break-word;
     border: 2px solid #a77841;
     line-height: 1.6;
+    text-align: right;
 }
 
 
@@ -235,8 +242,13 @@ input {
     border-radius: 10px;
     background-size: cover;
     box-shadow: 4px 4px 5px rgba(0, 0, 0, 0.3);
+}
 
 .medieval-button:hover {
-  background-color: #6e563e; /* Slightly darker brown on hover */
-  color: #ecdcb7; /* Light parchment color on hover */
+    background-color: #6e563e; /* Slightly darker brown on hover */
+    color: #ecdcb7;
+}
+
+input {
+    outline: none;
 }
