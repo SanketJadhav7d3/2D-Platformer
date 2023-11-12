@@ -39,8 +39,12 @@ class NPCBehaviour {
         });
     }
 
-    sendSimpleText() {
-        const url = 'https://studio.inworld.ai/v1/' + this.entityData.characterID + ':simpleSendText';
+    static sendSimpleText(entity) {
+        const url = 'https://studio.inworld.ai/v1/' + entity.entityData.characterID + ':simpleSendText';
+
+        if (game.textAreaMutex) {
+            return;
+        }
 
         // make post request 
         const myObj = {
@@ -49,27 +53,32 @@ class NPCBehaviour {
 
         fetch(url, {
             method: 'POST',
-            headers: this.headers,
+            headers: entity.headers,
             body: JSON.stringify(myObj)
         }).then(response => {
                 if (response.ok) {
+                    game.textAreaMutex = true;
+                    console.log(game.textAreaMutex);
                     return response.json();
                 } else {
                     throw new Error('Request failed');
                 }
             })
             .then(data => {
-                this.chatHistory[this.conversation_no] = {
+                entity.chatHistory[entity.conversation_no] = {
                     player: game.textArea.value, 
-                    [this.name]: data.textList.join('')
+                    [entity.name]: data.textList.join('')
                 };
 
                 game.textArea.value = "";
 
-                game.appendMessage(data.textList.join(''), this.name, 'npc-chat');
+                game.appendMessage(data.textList.join(''), entity.name, 'npc-chat');
 
-                localStorage.setItem(this.name, JSON.stringify(this.chatHistory));
-                this.conversation_no += 1;
+                localStorage.setItem(entity.name, JSON.stringify(entity.chatHistory));
+                entity.conversation_no += 1;
+
+                game.textAreaMutex = false;
+                console.log(game.textAreaMutex);
             })
             .catch(error => {
                 console.error('Error:', error);

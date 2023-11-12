@@ -1,5 +1,6 @@
 
 const village = {
+    name: 'Village', 
     bg_img_path: "./assets/environment/village_landscape.png",
     floorCollisionData: floorCollision,
     platformCollisionData: platformCollision,
@@ -10,6 +11,8 @@ const village = {
 }
 
 const cemetry = {
+    name: 'Cemetry', 
+    bg_img_path: "./assets/environment/village_landscape.png",
     bg_img_path: "./assets/environment/map.png", 
     floorCollisionData: floorCollision,
     platformCollisionData: cemetryFloorCollison,

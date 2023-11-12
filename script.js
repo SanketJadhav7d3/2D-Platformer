@@ -37,24 +37,47 @@ function removeOpening() {
     openingWindow.classList.add("fade-out");
 }
 
+// get current level from localstorage
+const currentLevelString = localStorage.getItem('currentLevel');
+
+const currentLevelData = currentLevelString ? JSON.parse(currentLevelString) : null;
+
+if (currentLevelData) {
+    game.initalizeLevel(currentLevelData);
+    console.log("Loaded from previous history");
+} else {
+    game.initalizeLevel(village);
+    console.log("New game");
+}
+
 window.onload = () => {
     if (canvasContainer.requestFullscreen) {
         canvasContainer.requestFullscreen();
     } else if (canvasContainer.webkitRequestFullscreen) { /* Safari */
-        canvasContainer.webkitRequestFullscreen();
+            canvasContainer.webkitRequestFullscreen();
     } else if (canvasContainer.msRequestFullscreen) { /* IE11 */
-        canvasContainer.msRequestFullscreen();
+            canvasContainer.msRequestFullscreen();
     } else if (canvasContainer.mozRequestFullScreen) {
         canvasContainer.mozRequestFullScreen();   /* morzilla */
     }
     // musicPlayer.openingMusic.play();
-    displayOpening();
+    if (!currentLevelData) 
+        displayOpening();
+    else {
+        game.currentLevel.hasGameStarted = true;
+        game.overlayIn();
+        game.overlayOut();
+    }
 }
 
-game.initalizeLevel(village);
-// game.initalizeLevel(cemetry);
+// window.onbeforeunload = function() {
+    // localStorage.clear();
+// };
 
+
+// game.initalizeLevel(cemetry);
 // menu keys
+
 window.onkeydown = (event) => {
     switch (event.key) {
         case " ":
@@ -78,4 +101,4 @@ window.onkeydown = (event) => {
     }
 }
 
-game.runGame();
+game.startLoop();

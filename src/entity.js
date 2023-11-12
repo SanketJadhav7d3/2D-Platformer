@@ -54,8 +54,8 @@ class Entity extends Sprite {
     }
 
     updateHitBox() {
-        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
-        this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+        // this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
+        // this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
         this.hitbox = {
             position:  {
                 x: this.position.x - this.hitBoxOffset.x,
@@ -638,7 +638,7 @@ class NPCController extends AIEntity {
     }
 }
 
-class BossEnemy extends Entity {
+class BossEnemy extends AIEntity {
     constructor({
         position,
         imageSrc,
@@ -648,7 +648,8 @@ class BossEnemy extends Entity {
         frameBuffer, 
         animation, 
         delayAfter = 1, 
-        context
+        context, 
+        hitBoxOffset
     }) {
         super({
             position,
@@ -658,8 +659,10 @@ class BossEnemy extends Entity {
             collisionBlocks,
             frameBuffer, 
             animation, 
-            context
+            context, 
+            hitBoxOffset
         });
+
         this.height /= 3.47;
         this.width /= 3;
         this.hitbox = {
@@ -675,19 +678,19 @@ class BossEnemy extends Entity {
         this.talkButton = document.createElement('button');
     }
 
-    updateHitBox() {
-        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
-        this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
-        this.hitbox = {
-            position:  {
-                x: this.position.x + 10,
-                y: this.position.y + 35
-            }, 
-            height: 55, 
-            width: 50
-        };
-    }
-
+//    updateHitBox() {
+//        this.context.fillStyle = "rgba(0, 255, 0, 0.5)";
+//        this.context.fillRect(this.hitbox.position.x, this.hitbox.position.y, this.hitbox.width, this.hitbox.height);
+//        this.hitbox = {
+//            position:  {
+//                x: this.position.x + 10,
+//                y: this.position.y + 35
+//            }, 
+//            height: 55, 
+//            width: 50
+//        };
+//    }
+//
 //    updateFramesRight() {
 //        if (this.currentFrame != this.frameRate - 1)
 //            super.updateFramesRight();

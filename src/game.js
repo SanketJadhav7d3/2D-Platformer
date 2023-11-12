@@ -13,22 +13,37 @@ class Game {
         this.leave_button = document.getElementById("leave-button");
         this.isChatboxShown = false;
         this.textArea = document.querySelector("input");
+        // store current level information in localstorage
         this.currentLevel = undefined;
         this.reqID = null;
 
         // this.submit_button.addEventListener("click", () => {});
 
         this.leave_button.addEventListener("click", () => { this.toggleChatBox() });
+        this.textAreaMutex = false;
+        this.entityTalking = undefined;
+
+        this.submit_button.addEventListener('click', () => {
+            this.sendText();
+        });
     }
 
     initalizeLevel(levelData) {
         levelData["context"] = this.context;
+        // save in localstorage 
         this.currentLevel = new Level(levelData);
+
+        // save currentLevel
+        localStorage.setItem('currentLevel', JSON.stringify(levelData));
     }
 
-    runGame() {
-        this.reqID = window.requestAnimationFrame(this.runGame.bind(this));
+    startLoop() {
+        this.reqID = window.requestAnimationFrame(this.startLoop.bind(this));
         this.currentLevel.drawBackground();
+    }
+
+    stopLoop() {
+        window.cancelAnimationFrame(this.reqID);
     }
 
     updateChatBox(chatHistory, entity) {
@@ -39,6 +54,8 @@ class Game {
             this.appendMessage(chatHistory[key]['player'], 'Player', 'player-chat');
             this.appendMessage(chatHistory[key][entity.name], entity.name, 'npc-chat');
         }
+
+        this.chatHistory.scrollTop = this.chatHistory.scrollHeight;
     }
 
     removeChatHistory() {
@@ -46,22 +63,33 @@ class Game {
             this.chatHistory.removeChild(this.chatHistory.firstChild);
     }
 
+    sendText() { 
+        if (this.textArea.value == "") {
+            console.log("Empty");
+            return;
+        }
+
+        if (this.entityTalking == undefined) {
+            console.log("No one talking");
+            return;
+        }
+
+        // append the player message
+        this.appendMessage(this.textArea.value, "Player", "player-chat");
+        this.chatHistory.scrollTop = this.chatHistory.scrollHeight;
+
+        // make api request
+
+        NPCBehaviour.sendSimpleText(this.entityTalking);
+
+        // clear the text area
+        // this.textArea.value = "";
+    }
+
     toggleChatBox(chatHistory, entity) {
-        // clear text
-        this.submit_button.addEventListener('click', () => { 
-
-            // append the player message
-            this.appendMessage(this.textArea.value, "Player", "player-chat");
-
-            // make api request
-            entity.sendSimpleText() 
-
-            // clear the text area
-            // this.textArea.value = "";
-        });
-
         this.textArea.value = "";
         if (!this.isChatboxShown) {
+            this.entityTalking = entity;
             this.isChatboxShown = !this.isChatboxShown;
             this.chatbox.style.left = "0px";
             this.textArea.focus();
@@ -74,6 +102,7 @@ class Game {
             this.textArea.blur();
             this.currentLevel.player.keysDisabled = false;
             this.removeChatHistory();
+            this.entityTalking = undefined;
         }
     }
 
@@ -84,12 +113,15 @@ class Game {
         const name_container = document.createElement('div');
 
         name_container.style.marginBottom = "15px";
+        name_container.style.color = "white";
+        name_container.style.borderBottom = "2px solid #a77841";
         name_container.innerHTML = entity_name;
 
         container.appendChild(name_container);
         container.appendChild(document.createTextNode(message));
 
         this.chatHistory.appendChild(container);
+        this.chatHistory.scrollTop = this.chatHistory.scrollHeight;
     }
 
     showChatBox() {
@@ -98,5 +130,28 @@ class Game {
 
     hideChatBox() {
             this.chatbox.style.left = "-500px";
+    }
+
+    changeLevel(levelData) {
+        // reload page
+        // initialize level 
+        // change localstorage currentLevel key to new levelData
+
+        location.reload();
+
+        localStorage.setItem("currentLevel", JSON.stringify(levelData));
+        this.initalizeLevel(levelData);
+    }
+
+    overlayIn() {
+        const overlay = document.getElementById('overlay');
+        overlay.style.height = "100%";
+        overlay.style.width = "100%";
+    }
+
+    overlayOut() {
+        const overlay = document.getElementById('overlay');
+        overlay.style.height = "0%";
+        overlay.style.width = "0%";
     }
 }

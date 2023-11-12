@@ -45,6 +45,7 @@ class Level {
         this.hasGameStarted = false;
         this.context = context;
         this.entities = [];
+        this.enemy_entities = [];
         this.playerData = playerData;
         this.AIEntitiesData = AIEntitiesData;
         this.EnemyEntitiesData = EnemyEntitiesData;
@@ -98,10 +99,10 @@ class Level {
         });
 
         this.EnemyEntitiesData.forEach((entityData) => {
-            this.entities.push(BossEnemy.createEntity(context, this.floorCollisionBlocks, entityData));
+            this.enemy_entities.push(BossEnemy.createEntity(this.context, this.floorCollisionBlocks, entityData));
         });
 
-        this.logicEntites = new EntityLogicGroup({entities: this.entities});
+        // this.logicEntites = new EntityLogicGroup({entities: this.entities});
     }
 
     addEntity(entity) {
@@ -174,6 +175,11 @@ class Level {
                     entity.controller.addTalkButton();
                 else
                     entity.controller.removeTalkButton();
+            });
+
+
+            this.enemy_entities.forEach((entity) => {
+                entity.update({ width: this.image.width, height: this.image.height});
             });
 
             this.player.update({ width: this.image.width, height: this.image.height});
