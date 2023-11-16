@@ -167,7 +167,6 @@ class Level {
 
             // update logic
             // this.logicEntites.update();
-
             this.entities.forEach((entity) => {
                 entity.controller.update({ width: this.image.width, height: this.image.height});
                 entity.controller.updateTalkButton(this.camera.position.x);

@@ -550,6 +550,9 @@ class NPCController extends AIEntity {
     }
 
     moveRight() {
+        if (this.position.x == 0)
+            return;
+
         this.velocity.x = 3;
         this.last_direction = "right";
         this.currentAnimationKey = "walk_" + this.last_direction;
@@ -613,6 +616,20 @@ class NPCController extends AIEntity {
                     this.action = 0
                 else
                     this.action = 2;
+
+
+            // if against wall  then return
+            if ((this.hitbox.position.x + this.hitbox.width >= width - 50 && this.velocity.x > 0)
+                || (this.hitbox.position.x <= 50 && this.velocity.x < 0)) {
+                this.action = 1;
+                this.velocity.x = 0;
+                return;
+            }
+
+
+            // don't move the npc while chatbox is shown
+            if (game.isChatboxShown) this.action = 1;
+
 
             if (this.action == 0)
                 this.moveLeft();
@@ -706,6 +723,8 @@ class BossEnemy extends AIEntity {
    
     // static method to create an entity instance 
     static createEntity(context, collisionBlocks, entityData) {
+
+        console.log(entityData);
 
         entityData["context"] = context;
         entityData["collisionBlocks"] = collisionBlocks;

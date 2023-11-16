@@ -89,6 +89,6 @@ const bossData = {
     animation: bossAnimation, 
     hitBoxOffset: {
         x: -85, 
-        y: -55
+        y: -40
     } 
 }
