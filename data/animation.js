@@ -218,3 +218,30 @@ const bossAnimation = {
     }, 
 };
 
+const skeletonAnimation = {
+    idle_left: {
+        imageSrc: "./assets/Enemies/Skeleton/walk_left.png",
+        frameRate: 8,
+    },
+    idle_right: {
+        imageSrc: "./assets/Enemies/Skeleton/walk_right.png",
+        frameRate: 8,
+    },
+    run_left: {
+        imageSrc: "./assets/Enemies/Skeleton/walk_left.png",
+        frameRate: 8,
+    },
+    run_right: {
+        imageSrc: "./assets/Enemies/Skeleton/walk_right.png",
+        frameRate: 8,
+    },
+    rise_right: {
+        imageSrc: "./assets/Enemies/Skeleton/rise_right.png",
+        frameRate: 6,
+    },
+    rise_left: {
+        imageSrc: "./assets/Enemies/Skeleton/rise_left.png",
+        frameRate: 6,
+    },
+
+}

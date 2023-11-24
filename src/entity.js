@@ -229,6 +229,21 @@ class PlayerEntity extends Entity {
         window.addEventListener("keydown", this.keyDownHandler.bind(this));
         window.addEventListener("keyup", this.keyUpHandler.bind(this));
         window.addEventListener("keypress", this.keyPressHandler.bind(this));
+
+        this.healthGuage = document.createElement("div");
+
+        const heartImage = document.createElement("img"); 
+
+        heartImage.style.height = "70px";
+        heartImage.style.width = "70px";
+        heartImage.src = "./assets/icons/heart_icon_4.png";
+
+        this.healthGuage.appendChild(heartImage);
+
+        this.healthGuage.classList.add("health-guage");
+
+        var container = document.getElementById("container");
+        container.appendChild(this.healthGuage);
     }
 
     keyDownHandler(e) {
@@ -476,6 +491,26 @@ class AIEntity extends Entity {
             super.updateFramesLeft();
     }
 
+    moveLeft() {
+        this.velocity.x = -3;
+        this.last_direction = "left";
+        this.currentAnimationKey = "walk_" + this.last_direction;
+    }
+
+    moveRight() {
+        if (this.position.x == 0)
+            return;
+
+        this.velocity.x = 3;
+        this.last_direction = "right";
+        this.currentAnimationKey = "walk_" + this.last_direction;
+    }
+
+    stayStill() {
+        this.velocity.x = 0;
+        this.currentAnimationKey = "idle_" + this.last_direction;
+    }
+
     // static method to create an entity instance 
     static createEntity(context, collisionBlocks, entityData) {
 
@@ -541,26 +576,6 @@ class NPCController extends AIEntity {
         this.action = 1;
         this.buffer = 200;
         this.elapsed = 0;
-    }
-
-    moveLeft() {
-        this.velocity.x = -3;
-        this.last_direction = "left";
-        this.currentAnimationKey = "walk_" + this.last_direction;
-    }
-
-    moveRight() {
-        if (this.position.x == 0)
-            return;
-
-        this.velocity.x = 3;
-        this.last_direction = "right";
-        this.currentAnimationKey = "walk_" + this.last_direction;
-    }
-
-    stayStill() {
-        this.velocity.x = 0;
-        this.currentAnimationKey = "idle_" + this.last_direction;
     }
 
     removeTalkButton() {
@@ -652,6 +667,63 @@ class NPCController extends AIEntity {
         entityData["collisionBlocks"] = collisionBlocks;
 
         return new NPCController(entityData);
+    }
+}
+
+class Skeleton extends AIEntity { 
+    constructor({
+        position,
+        imageSrc,
+        frameRate,
+        scale,
+        collisionBlocks,
+        frameBuffer, 
+        animation, 
+        delayAfter = 1, 
+        context, 
+        hitBoxOffset
+    }) {
+        super({
+            position,
+            imageSrc,
+            frameRate,
+            scale,
+            collisionBlocks,
+            frameBuffer, 
+            animation, 
+            context, 
+            hitBoxOffset
+        });
+
+        this.height /= 3.47;
+        this.width /= 3;
+        this.hitbox = {
+            position:  {
+                x: this.position.x,
+                y: this.position.y
+            }, 
+            height: 11, 
+            width: 10
+        };
+        this.frames = 0;
+        this.delayAfter = delayAfter;
+        this.talkButton = document.createElement('button');
+    }
+
+    // make them follow player 
+
+    
+
+    // static method to create an entity instance 
+    static createEntity(context, collisionBlocks, entityData, spawnX) {
+
+        console.log(entityData);
+
+        entityData["context"] = context;
+        entityData["collisionBlocks"] = collisionBlocks;
+
+
+        return new BossEnemy(entityData);
     }
 }
 

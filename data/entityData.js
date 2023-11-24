@@ -92,3 +92,18 @@ const bossData = {
         y: -40
     } 
 }
+
+const skeletonData = {
+    position: {x : 300, y : 100}, 
+    imageSrc: "./assets/Enemies/Skeleton/walk_left.png",
+    frameRate: 8,
+    scale: 1,
+    collisionBlocks: this.floorCollisionBlocks,
+    frameBuffer: 10, 
+    animation: skeletonAnimation, 
+    hitBoxOffset: {
+        x: -85, 
+        y: -5
+    } 
+}
+

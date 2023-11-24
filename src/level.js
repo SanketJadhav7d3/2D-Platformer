@@ -14,6 +14,7 @@ class Tile {
 
 class Level {
     constructor({
+        name, 
         bg_img_path, 
         mg_img_path=null, 
         fg_img_path=null,
@@ -26,6 +27,7 @@ class Level {
         apiData
     }) 
     {
+        this.name = name;
         this.image = new Image();
         this.image.src = bg_img_path;
 
@@ -99,10 +101,18 @@ class Level {
         });
 
         this.EnemyEntitiesData.forEach((entityData) => {
-            this.enemy_entities.push(BossEnemy.createEntity(this.context, this.floorCollisionBlocks, entityData));
+            this.enemy_entities.push(Skeleton.createEntity(this.context, this.floorCollisionBlocks, entityData));
         });
 
         // this.logicEntites = new EntityLogicGroup({entities: this.entities});
+
+        const storedData = localStorage.getItem(this.name + "State");
+        this.worldState = storedData ? JSON.parse(storedData) : {playerPos: {}, playerState: {}};
+    }
+
+    storeWorldState() {
+        // store worldState into localstorage
+        localStorage.setItem(this.name + "State", JSON.stringify(this.worldState));
     }
 
     addEntity(entity) {
@@ -168,6 +178,11 @@ class Level {
             // update logic
             // this.logicEntites.update();
             this.entities.forEach((entity) => {
+
+                // update player positions into world state
+
+                this.worldState.playerPos[entity.name] = entity.controller.position;
+
                 entity.controller.update({ width: this.image.width, height: this.image.height});
                 entity.controller.updateTalkButton(this.camera.position.x);
                     if (collision({object1: this.player.hitbox, object2: entity.controller.hitbox})) 
@@ -176,13 +191,16 @@ class Level {
                     entity.controller.removeTalkButton();
             });
 
-
             this.enemy_entities.forEach((entity) => {
                 entity.update({ width: this.image.width, height: this.image.height});
             });
 
             this.player.update({ width: this.image.width, height: this.image.height});
         }
+
+
+        // store world State
+        this.storeWorldState();
 
         this.shouldPanToTheRigth();
         this.shouldPanToTheLeft();
@@ -206,5 +224,58 @@ class Level {
             // tile.draw();
         // });
         this.context.restore();
+    }
+}
+
+class World extends Level {
+    // world implementation 
+    // JSON to store world state 
+    // will contain each players position and their thoughts 
+    // for that we can use local storage
+
+    constructor({
+        bg_img_path, 
+        mg_img_path=null, 
+        fg_img_path=null,
+        floorCollisionData,
+        platformCollisionData,
+        context,
+        playerData, 
+        AIEntitiesData,
+        apiData
+    }) {
+        super({
+            bg_img_path, 
+            mg_img_path, 
+            fg_img_path,
+            floorCollisionData,
+            platformCollisionData,
+            context,
+            playerData, 
+            AIEntitiesData,
+            apiData
+        });
+
+        // json object to store each world information
+        // load from local storage
+
+
+    }
+}
+
+class Cemetry extends Level {
+    constructor({
+        bg_img_path, 
+        mg_img_path=null, 
+        fg_img_path=null,
+        floorCollisionData,
+        platformCollisionData,
+        context,
+        playerData, 
+        EnemyEntitiesData, 
+        apiData
+    }) 
+    {
+
     }
 }

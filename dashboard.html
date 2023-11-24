@@ -1,0 +1,76 @@
+<!doctype html>
+<html>
+    <head>
+        <link href="dashboard.css" rel="stylesheet" />
+    </head>
+    <body>
+        <div class="dashboard-container">
+            <div id="playerPosDisplay">
+                <div class="player-container">
+                    <div class="player-name">
+                        Gareth
+                    </div>
+                    <div class="player-pos">
+                        X : <p id="Gareth-x"></p>
+                        Y : <p id="Gareth-y"></p>
+                    </div>
+                </div>
+
+                <div class="player-container">
+                    <div class="player-name">
+                        Elevyn
+                    </div>
+                    <div class="player-pos">
+                        X : <p id="Elevyn-x"></p>
+                        Y : <p id="Elevyn-y"></p>
+                    </div>
+                </div>
+
+                <div class="player-container">
+                    <div class="player-name">
+                        Lucas
+                    </div>
+                    <div class="player-pos">
+                        X : <p id="Lucas-x"></p>
+                        Y : <p id="Lucas-y"></p>
+                    </div>
+                </div>
+
+                <div class="player-container">
+                    <div class="player-name">
+                        Elias 
+                    </div>
+                    <div class="player-pos">
+                        X : <p id="Elias-x"></p>
+                        Y : <p id="Elias-y"></p>
+                    </div>
+                </div>
+            </div>
+
+            <div id="playerMemory">
+            </div>
+
+            <div id="palyerState">
+            </div>
+        </div>
+
+        <script>
+            function updateDashBoard() {
+                // get localstorage
+                const storedData = localStorage.getItem("VillageState");
+                var worldState = storedData ? JSON.parse(storedData) : {playerPos: {}, playerState: {}};
+
+                Object.entries(worldState.playerPos).forEach(([name, pos]) => {
+                    document.getElementById(name + "-x").innerHTML = pos.x;
+                    document.getElementById(name + "-y").innerHTML = pos.y;
+                });
+
+                // update npc memory stream
+                window.requestAnimationFrame(updateDashBoard);
+            }
+
+            updateDashBoard();
+
+        </script>
+    </body>
+</html>

@@ -65,8 +65,8 @@ window.onload = () => {
         displayOpening();
     else {
         game.currentLevel.hasGameStarted = true;
-        game.overlayIn();
-        game.overlayOut();
+        // game.overlayIn();
+        // game.overlayOut();
     }
 }
 

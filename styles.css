@@ -4,7 +4,6 @@ body {
     padding: 0px;
     margin: 0px;
     font-family: gothic;
-
 }
 
 @font-face {
@@ -12,6 +11,19 @@ body {
     src: url('./assets/font/GothicPixels.ttf')
 }
 
+
+.health-guage {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+}
+
+.setting-container {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 3;
+}
 
 #container {
     background-color: black;
@@ -33,12 +45,20 @@ body {
     background: url("./assets/icons/volume-2.svg");
 }
 
-#overlay {
+.settings-window {
     position: absolute;
-    transition: width 5s ease, height 5s ease;
-    background-color: black;
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: space-evenly;
+    align-items: center;
+    display: none;
+    z-index: 2;
 }
 
+.visible {
+    display: none;
+}
 
 .hidden {
     opacity: 0;
@@ -103,7 +123,7 @@ body {
     top: 0px;
     left: -700px;
     width: 700px;
-    height: 900px;
+    height: 1000px;
     /* background: rgba(187, 92, 92, 0.6); */
     /*-webkit-filter: blur(10px);
     -moz-filter: blur(10px);
@@ -143,6 +163,7 @@ body {
     border: 2px solid #a77841;
     font-size: 20px;
     scroll-behavior: smooth;
+    height: 900px;
 }
 
 .playerResponse {
@@ -189,7 +210,7 @@ input {
     border-radius: 15px 50px;
     background: linear-gradient(145deg, #674e3b, #564232);
     box-shadow:  20px 20px 60px #584333,
-             -20px -20px 60px #684f3b;
+    -20px -20px 60px #684f3b;
     word-wrap: break-word;
     border: 2px solid #a77841;
     line-height: 1.6;
@@ -198,7 +219,6 @@ input {
 .npc-name {
     margin: 10px;
 }
-
 
 .player-chat {
     font-family: gothic;

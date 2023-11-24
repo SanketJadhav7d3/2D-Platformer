@@ -12,7 +12,13 @@ class Game {
         this.submit_button = document.getElementById("submit-button");
         this.leave_button = document.getElementById("leave-button");
         this.isChatboxShown = false;
+        this.isSettingShown = false;
         this.textArea = document.querySelector("input");
+
+        this.setting_button = document.getElementById("settings-button");
+
+        this.setting_window = document.getElementById("settings-window");
+
         // store current level information in localstorage
         this.currentLevel = undefined;
         this.reqID = null;
@@ -26,10 +32,36 @@ class Game {
         this.submit_button.addEventListener('click', () => {
             this.sendText();
         });
+
+        this.setting_button.addEventListener('click', () => {
+            this.toggleSettingWindow();
+        });
+
+        this.village_button = document.getElementById("village-button");
+        this.cemetry_button = document.getElementById("cemetry-button");
+        this.swamp_button = document.getElementById("swamp-button");
+
+        this.village_button.addEventListener('click', () => {
+            if (this.currentLevel.name == "Village") this.toggleSettingWindow();
+            else this.changeLevel(village);
+        });
+
+        this.cemetry_button.addEventListener('click', () => {
+            if (this.currentLevel.name == "Cemetry") this.toggleSettingWindow();
+            else this.changeLevel(cemetry);
+        });
+
+        this.swamp_button.addEventListener('click', () => {
+            if (this.currentLevel.name == "Swamp") this.toggleSettingWindow();
+            else this.changeLevel(swamp);
+        });
     }
 
     initalizeLevel(levelData) {
         levelData["context"] = this.context;
+
+        console.log(levelData);
+
         // save in localstorage 
         this.currentLevel = new Level(levelData);
 
@@ -84,6 +116,26 @@ class Game {
 
         // clear the text area
         // this.textArea.value = "";
+    }
+
+    toggleSettingWindow() {
+        if (!this.isSettingShown) {
+            this.isSettingShown = !this.isSettingShown;
+            this.setting_window.style.display = "block";
+            this.setting_window.style.position = "absolute";
+            this.setting_window.style.height = "100vh";
+            this.setting_window.style.width = "100vw";
+            this.setting_window.style.display = "flex";
+            this.setting_window.style.justifyContent = "space-evenly";
+            this.setting_window.style.alignItems = "center";
+            this.setting_window.style.backgroundColor = "rgba(0, 0, 0, 0.5)";
+            this.stopLoop();
+        } else {
+            this.isSettingShown = !this.isSettingShown;
+            this.setting_window.style.display = "none";
+            this.setting_window.classList.remove("settings-window");
+            this.startLoop();
+        }
     }
 
     toggleChatBox(chatHistory, entity) {
