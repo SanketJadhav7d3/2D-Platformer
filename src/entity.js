@@ -632,8 +632,7 @@ class NPCController extends AIEntity {
                 else
                     this.action = 2;
 
-
-            // if against wall  then return
+            // if against wall then return
             if ((this.hitbox.position.x + this.hitbox.width >= width - 50 && this.velocity.x > 0)
                 || (this.hitbox.position.x <= 50 && this.velocity.x < 0)) {
                 this.action = 1;
@@ -711,8 +710,6 @@ class Skeleton extends AIEntity {
     }
 
     // make them follow player 
-
-    
 
     // static method to create an entity instance 
     static createEntity(context, collisionBlocks, entityData, spawnX) {

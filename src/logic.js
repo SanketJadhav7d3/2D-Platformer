@@ -86,9 +86,9 @@ class NPCBehaviour {
     }
 
     greetFromOther(greeting) {
+
     }
 }
-
 
 class EntityLogicGroup {
     constructor({entities}) {
